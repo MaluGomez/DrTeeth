@@ -25,13 +25,13 @@
           <b-collapse id="ui-basic">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <router-link class="nav-link" to="/buttons/">Lista de Pacientes</router-link>
+                <router-link class="nav-link" to="/listaPacientes/">Lista de Pacientes</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/dropdowns/">Nueva Consulta</router-link>
+                <router-link class="nav-link" to="/nuevaConsulta/">Nueva Consulta</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/typography/">Nuevo Paciente</router-link>
+                <router-link class="nav-link" to="/nuevoPaciente/">Nuevo Paciente</router-link>
               </li>
             </ul>
           </b-collapse>
@@ -46,7 +46,7 @@
           <b-collapse id="charts-dropdown">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <router-link class="nav-link" to="/chartjs/">Citas</router-link>
+                <router-link class="nav-link" to="/agendaCita/">Citas</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/registro/">Nueva Cita</router-link>
@@ -57,7 +57,7 @@
             
           </b-collapse>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <a class="nav-link" v-b-toggle="'tables'">
             <i class="menu-icon mdi mdi-table"></i>
             <span class="menu-title">Reportes</span>
@@ -70,8 +70,8 @@
               </li>
             </ul>
           </b-collapse>
-        </li>
-        <li class="nav-item">
+        </li>-->
+       <!-- <li class="nav-item">
           <a class="nav-link" v-b-toggle="'icons'">
             <i class="menu-icon typcn typcn-user-outline"></i>
             <span class="menu-title">Icons</span>
@@ -101,7 +101,7 @@
               </li>
             </ul>
           </b-collapse>
-        </li>
+        </li>-->
        
       </ul>
     </nav>

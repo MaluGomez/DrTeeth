@@ -3,20 +3,21 @@ import Router from 'vue-router'
 
 // Dashboard Components
 import dashboard from '../views/dashboard'
+import dashAdmin from '../views/dashAdmin'
 
 //  Widgets Components
 import mainView from '../mainView'
 
-import buttons from '../views/basic-elements/buttons'
-import dropdowns from '../views/basic-elements/dropdowns'
-import typography from '../views/basic-elements/typography'
+import listaPacientes from '../views/basic-elements/listaPacientes'
+import nuevaConsulta from '../views/basic-elements/nuevaConsulta'
+import nuevoPaciente from '../views/basic-elements/nuevoPaciente'
+import Tratamiento from '../views/basic-elements/Tratamiento'
 
 //  Chart Components
-import chartjs from '../views/charts/chartjs'
+import agendaCita from '../views/charts/agendaCita'
 import registro from '../views/charts/registro'
 
-//  Icons Components
-import mdiIcons from '../views/icons/mdi-icons'
+
 
 import login from '../views/samples/user-pages/login'
 import register from '../views/samples/user-pages/register'
@@ -41,26 +42,37 @@ export default new Router({
         component: dashboard
       },
       {
-        path: '/buttons',
-        name: 'buttons',
-        component: buttons
+        path: '/dashAdmin',
+        name: 'dashAdmin',
+        component: dashAdmin
       },
       {
-        path: '/dropdowns',
-        component: dropdowns
+        path: '/listaPacientes',
+        name: 'listaPacientes',
+        component: listaPacientes
       },
       {
-        path: '/typography',
-        component: typography
+        path: '/Tratamiento',
+        name: 'Tratamiento',
+        component: Tratamiento
       },
       {
-        path: '/chartjs',
-        component: chartjs
+        path: '/nuevaConsulta',
+        component: nuevaConsulta
       },
       {
-        path: '/mdiIcons',
-        component: mdiIcons
+        path: '/nuevoPaciente',
+        component: nuevoPaciente
       },
+      {
+        path: '/agendaCita',
+        component: agendaCita
+      },
+        {
+        path: '/registro',
+        component: registro
+      },
+      
       {
         path: '/basic_table',
         name: 'basicTables',

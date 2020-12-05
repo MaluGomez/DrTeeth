@@ -17,7 +17,7 @@
       <div class='col-md-8 grid-margin stretch-card'>
         <div class='card'>
           <div class='card-body'>
-            <h4 class='card-title mb-0'>DATOS PERSONALES</h4>
+            <h4 class='card-title mb-0'>DATOS PERSONALES ADMIN</h4>
             <hr size="30" />
             <div class='d-flex flex-column flex-lg-row'>
               <!--About section starts-->
@@ -35,37 +35,33 @@
                                     <li class="mb-2">
                                         <span class="text-bold-500 badge badge-secondary"><a><i class="icon-present font-small-3"></i> Nombre:</a></span>
                                         <br>
-                                        <span class="display-block overflow-hidden">Juan Manuel</span>
+                                        <span class="display-block overflow-hidden">Maria Lucia</span>
                                     </li>
                                     <li class="mb-2">
                                         <span class="text-bold-500 badge badge-secondary"><a><i class="mdi mdi-account-card-details"></i> Apellidos:</a></span>
                                         <br>
-                                        <span class="display-block overflow-hidden">Gomez Duran</span>
+                                        <span class="display-block overflow-hidden">Gomez Rodriguez</span>
                                     </li>
                                     
                                     <li class="mb-2">
                                         <span class="text-bold-500 small badge badge-secondary"><a><i class="mdi mdi-account"></i> Fecha de nacimiento:</a></span>
                                         <br>
-                                        <span class="display-block overflow-hidden"> Enero 10, 19960 </span>
+                                        <span class="display-block overflow-hidden"> Enero 23, 1999 </span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-12 col-md-6 col-lg-4">
                                 <ul class="no-list-style">
-                                    <li class="mb-2">
-                                        <span class="text-bold-500 badge badge-secondary"><a><i class="mdi mdi-account"></i> Telefono:</a></span>
-                                        <br>
-                                        <span class="display-block overflow-hidden"> 6475618 </span>
-                                    </li>
+                                    
                                     <li class="mb-2">
                                         <span class="text-bold-500 badge badge-pill badge-secondary"><a><i class="mdi mdi-account"></i> Celular:</a></span>
                                         <br>
-                                        <span class="display-block overflow-hidden"> 3003601697 </span>
+                                        <span class="display-block overflow-hidden"> 3155727704 </span>
                                     </li> 
                                     <li class="mb-2">
                                         <span class="text-bold-500 badge badge-secondary"><a><i class="ft-globe font-small-3"></i> Género:</a></span>
                                         <br>
-                                        <span class="display-block overflow-hidden">Masculino</span>
+                                        <span class="display-block overflow-hidden">Femenino</span>
                                     </li>
                                    
                                     
@@ -79,12 +75,12 @@
                                     <li class="mb-2">
                                         <span class="text-bold-500 badge badge-secondary">
                                             <a><i class="ft-user font-small-3"></i> Correo electrónico:</a></span>
-                                        <span class="display-block overflow-hidden">juan.m.gomezd@gmail.es</span>
+                                        <span class="display-block overflow-hidden">malugomezr@hotmail.com</span>
                                     </li>
                                      <li class="mb-2">
                                         <span class="text-bold-500 badge badge-secondary">
                                             <a><i class="ft-user font-small-3"></i> Documento identidad:</a></span>
-                                        <span class="display-block overflow-hidden">juan.m.gomezd@gmail.es</span>
+                                        <span class="display-block overflow-hidden">1324346578</span>
                                     </li>                                
                                     
                                     
@@ -102,40 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <center><i><h5>Información Profesional</h5></i></center>
-                </div>
-                <div class="card-body">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                <ul class="no-list-style">
-                                    <li class="mb-2">
-                                        <span class="text-bold-500 badge badge-pill badge-secondary"><a><i class="mdi mdi-account"></i> Dirección Atención:</a></span>
-                                        <br>
-                                        <span class="display-block overflow-hidden"> Cra 33 12345678 </span>
-                                    </li> 
-                                </ul>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-4">
-                                 <ul class="no-list-style">
-                                    <li class="mb-2">
-                                        <span class="text-bold-500 badge badge-pill badge-secondary"><a><i class="mdi mdi-account"></i> Número Registro Profesional:</a></span>
-                                        <br>
-                                        <span class="display-block overflow-hidden"> 3242983498 </span>
-                                    </li> 
-
-                                </ul>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </section>
               
@@ -159,7 +122,7 @@
                <center>
                 <a href="url">
                    
-                 <img src="@/assets/images/faces/JM.jpeg" width="290" height="390" align="absmiddle"/>
+                 <img src="@/assets/images/faces/MALU.jpg" width="290" height="300" align="absmiddle"/>
                 
                 </a> 
                 </center>
@@ -167,7 +130,7 @@
                 <hr/>
                 <center>
                                         
-                <h1>@JUANCHO</h1>
+                <h1>@MALU</h1>
                 <hr />
                 <hr/>
                 </center>

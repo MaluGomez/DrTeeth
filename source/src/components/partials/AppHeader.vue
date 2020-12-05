@@ -48,6 +48,7 @@
               <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey</p>
               <p class="font-weight-light small-text"> The meeting is cancelled </p>
             </div>
+
           </b-dropdown-item>
           <b-dropdown-item class="preview-item">
             <div class="preview-thumbnail">
@@ -73,11 +74,7 @@
               <p class="font-weight-light text-muted mb-0">juan.m.gomezd@gmail.com</p>
             </div>
           </b-dropdown-item>
-         
-          <b-dropdown-item>Mensajes<i class="dropdown-item-icon ti-comment-alt"></i></b-dropdown-item>
-          
-          
-          <b-dropdown-item>Cerrar Sesión<i class="dropdown-item-icon ti-power-off"></i></b-dropdown-item>
+            <b-dropdown-item>Cerrar Sesión<i class="dropdown-item-icon ti-power-off"></i></b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
       <button class="navbar-toggler navbar-toggler-right align-self-center" type="button" @click="collapedMobileSidebar()">
