@@ -1,0 +1,289 @@
+<template>
+  <div>
+    <v-layout wrap pa-5>
+      <v-flex col-12>
+        <h1>ODONTOLOGO</h1>
+        <v-divider></v-divider>
+      </v-flex>
+      <v-flex col-12>
+        <v-card elevation="24">
+          <v-layout wrap>
+            <v-flex col-12>
+              <h1>Agregar Odontólogo</h1>
+              <v-divider></v-divider>
+            </v-flex>
+          </v-layout>
+          <v-flex col-6>
+            <v-layout ma-2 white>
+              <v-flex col-12>
+                <v-layout wrap>
+                  <v-flex col-12>
+                    <v-text-field
+                      dense
+                      filled
+                      prepend-inner-icon="mdi-account-box-outline"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="NombreOdontólogo*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+
+                  <v-flex col-12>
+                    <v-select
+                      prepend-inner-icon="mdi-credit-card"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      :items="['CC', 'TI']"
+                      filled
+                      label="Tipo Documento*"
+                      dense
+                    ></v-select>
+                  </v-flex>
+
+                  <v-flex col-12>
+                    <v-dialog
+                      ref="dialog"
+                      v-model="modal"
+                      :return-value.sync="date"
+                      persistent
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          filled
+                          :rules="[
+                            (val) =>
+                              (val || '').length > 0 || 'Campo Requerido',
+                          ]"
+                          v-model="date"
+                          label="FechaNacimiento*"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="date" scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="modal = false"
+                          >Cancel</v-btn
+                        >
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.dialog.save(date)"
+                          >OK</v-btn
+                        >
+                      </v-date-picker>
+                    </v-dialog>
+                  </v-flex>
+                  <v-flex col-12>
+                    <v-text-field
+                      dense
+                      filled
+                      prepend-inner-icon="mdi-directions"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="DirecciónConsultorio*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex col-12>
+                    <v-text-field
+                      filled
+                      prepend-inner-icon="mdi-gmail"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="CorreoElectrónico*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex col-12>
+                    <v-text-field
+                      filled
+                      prepend-inner-icon="mdi-account-box"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="NombreUsuario*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+
+              <v-flex col-12>
+                <v-layout wrap>
+                  <v-flex col-12>
+                    <v-text-field
+                      dense
+                      filled
+                      prepend-inner-icon="mdi-account-box-outline"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="ApellidosOdontologo*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+
+                  <v-flex col-12>
+                    <v-text-field
+                      filled
+                      prepend-inner-icon="mdi-credit-card"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="Número Documento*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+
+                  <v-flex col-12>
+                    <v-radio-group
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      row
+                      label="Genero*"
+                    >
+                      <v-radio
+                        label="Femenino"
+                        color="#F7B1F4"
+                        value="primary"
+                      ></v-radio>
+                      <v-radio
+                        label="Masculino"
+                        color="primary"
+                        value="secondary"
+                      ></v-radio>
+                    </v-radio-group>
+                  </v-flex>
+                  <v-flex col-12>
+                    <v-text-field
+                      filled
+                      prepend-inner-icon="mdi-cellphone"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="Telefono/Celular*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex col-12>
+                    <v-text-field
+                      filled
+                      prepend-inner-icon="mdi-credit-card"
+                      :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                      color="purple darken-2"
+                      label="NúmeroRegistroProfesional*"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+
+                  <v-flex col-12>
+                    <v-text-field
+                      filled
+                      v-model="password"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[(value) => !!value || 'Campo Requerido.',(v) => v.length >= 8 || 'Minimo 8 caracteres']"
+                      :type="show1 ? 'text' : 'password'"
+                      name="input-10-1"
+                      label="ContraseñaOdontólogo"
+                      hint="Pon al menos 8 caracteres"
+                      counter
+                      @click:append="show1 = !show1"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <v-layout wrap>
+            <v-flex col-12>
+              <v-textarea
+                outlined
+                filled
+                :rules="[
+                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                      ]"
+                 prepend-inner-icon="mdi-book-open"
+                style="width:80%; display: block; margin-left: auto; margin-right: auto; "                
+                name="input-7-4"
+                color="black"
+                label="Descripción Corta del Odontologo*"
+              ></v-textarea>
+            </v-flex>
+          </v-layout>
+          <v-layout wrap>
+            <v-flex col-12>
+              <v-flex col-12 text-right>
+                <v-btn
+                  color="blue-grey"
+                  class="mx-2 success"
+                  @click="saveOdonto()"
+                >
+                  Agregar
+                  <v-icon right dark>mdi-account-plus</v-icon>
+                </v-btn>
+              </v-flex>
+
+              <v-flex col-12>
+                <v-alert
+                  dense
+                  transition="scale-transition"
+                  text
+                  type="success"
+                  v-if="updatedAlert"
+                >
+                  Se agregó el odontologo satisfactoriamente.
+                </v-alert>
+              </v-flex>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </div>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    date: new Date().toISOString().substr(0, 10),
+    menu: false,
+    modal: false,
+    modal2: false,
+    time: null,
+    updatedAlert: false,
+    show1: false,
+    show2: true,
+    show3: false,
+    show4: false,
+    password: "Password",
+    
+  }),
+  
+  methods: {
+    saveOdonto() {
+      let currentOdonto = {};
+
+      this.updatedAlert = true;
+    },
+  },
+};
+</script>
