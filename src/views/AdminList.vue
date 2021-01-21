@@ -110,27 +110,30 @@ export default {
         { text: "Opciones", align: "center", value: "opciones" },
       ],
       adminList: [
-        {
-          id: "1",
-          nameA: "Maria Lucia",
-          lastNameA: "Gomez Rodriguez",
-          phoneA: "3231231231",
-          emailA: "malu@ag.com",
-          userName: "malugomez",
-          pssw: "12345",
-        },
-        {
-          id: "2",
-          nameA: "Euly Alfariana",
-          lastNameA: "Garcés Valero",
-          phoneA: "3231232323431",
-          emailA: "euly@hot.com",
-          userName: "eulyga",
-          pssw: "54321",
-        },
-      ],
+        ],
     };
   },
+
+  mounted () {
+    console.log("Montando todo!")
+    fetch ("http://localhost:3304/Administrador")
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+        .then(response => {
+          response.forEach(element => {
+            let itemTemp = {}
+            itemTemp.id = element.idAdministrador
+            itemTemp.nameA = element.nombres
+            itemTemp.lastNameA = element.apellidos
+            itemTemp.phoneA = element.telefono
+            itemTemp.emailA = element.email
+            itemTemp.userName = element.nombres
+            this.adminList.push(itemTemp)
+          });
+        });
+  },
+
+  
   methods: {
     selectUser(user) {
       this.selUser = user;

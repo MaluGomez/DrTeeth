@@ -253,36 +253,33 @@ export default {
       { text: "Opciones", align: "center", value: "opciones" },
     ],
     odontoList: [
-      {
-        id: "1",
-        name: "Juan Manuel",
-        lastname: "Gomez Duran",
-        tipoDoc: "CC",
-        numDoc: "2132131231",
-        fechaNac: "1960-01-10",
-        registerP: "12312312",
-        genero: "M",
-        adress: "calle 63",
-        cel: "23456789",
-        mail: "juan@hotmail.com",
-        description: "Hola soy Juan Manuel"
-      },
-      {
-        id: "2",
-        name: "Olga Lucia",
-        lastname: "Rodriguez Torres",
-        tipoDoc: "CC",
-        numDoc: "234232132",
-        fechaNac: "1968-10-23",
-        registerP: "1098765",
-        genero: "F",
-        adress: "calle 63",
-        cel: "765456",
-        mail: "olga@hotmail.com",
-        description: "Hola soy Olga Lucia"
-      },
+     
     ],
   }),
+    mounted () {
+    console.log("Montando todo!")
+    fetch ("http://localhost:3304/Odontologo")
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+        .then(response => {
+          response.forEach(element => {
+            let itemTemp = {}
+            itemTemp.id = element.idOdontologo
+            itemTemp.name = element.nombres
+            itemTemp.lastname = element.apellidos
+            itemTemp.tipoDoc = element.tipoDoc
+            itemTemp.numDoc = element.documentoIdentidad
+            itemTemp.fechaNac = element.fechaNacimiento
+            itemTemp.registerP = element.numeroRegistro
+            itemTemp.genero = element.genero
+            itemTemp.adress = element.direccionAtencion
+            itemTemp.cel = element.telefono
+            itemTemp.mail = element.email
+            itemTemp.description = element.descripcion
+            this.odontoList.push(itemTemp)
+          });
+        });
+  },
   methods: {
     selectUser(user) {
       this.selUser = user;

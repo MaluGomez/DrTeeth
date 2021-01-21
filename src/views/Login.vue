@@ -142,9 +142,15 @@ export default {
             .then(response => {
               console.log(response[0])
               if (response[0]) {
+                if (response[0].rol == "1"){
+                this.$store.state.user.email = this.email                
+                this.$store.state.user.rol = "0"
+                this.$router.push('/').catch(()=>{})  
+                }
                 this.$store.state.user.email = this.email
-                this.$store.state.user.rol = "1"
-                this.$router.push('/').catch(()=>{})
+                this.$store.state.user.rol = "1"  
+                this.$router.push('/').catch(()=>{}
+                )
               } else {
                 console.log(response)
               }
@@ -157,6 +163,7 @@ export default {
           this.$store.state.user.email = this.email
           this.$store.state.user.rol = "1"
           this.$router.push('/').catch(()=>{})
+          //rol odontologo//
         } else if (this.email == 'shongo@ag.com') {
           this.$store.state.user.email = this.email
           this.$store.state.user.name = "Jhon Edinson"
