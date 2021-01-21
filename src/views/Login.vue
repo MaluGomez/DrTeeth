@@ -121,11 +121,39 @@ export default {
   methods: {
     async Login () {
       if (this.valid) {
+        let data = {
+          password: this.password,
+          user: this.email
+        }
+        console.log(data)
+        const response = await fetch("http://localhost:3304/Auth", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response[0])
+              if (response[0]) {
+                this.$store.state.user.email = this.email
+                this.$store.state.user.rol = "1"
+                this.$router.push('/').catch(()=>{})
+              } else {
+                console.log(response)
+              }
+            });
         
         /**
          * ACA DEBERIA HACER LA CONSULTA A LA BASE DE DATOS O AL BACK PARA VER SI TODO COINCIDE Y PUEDE PASAR.
          */
-        if (this.email == 'malu@ag.com') {
+        /*if (this.email == 'malu@ag.com') {
           this.$store.state.user.email = this.email
           this.$store.state.user.rol = "1"
           this.$router.push('/').catch(()=>{})
@@ -145,7 +173,7 @@ export default {
           this.$router.push('/').catch(()=>{})
         } else {
           console.log('No coincide')
-        }
+        }*/
       }
     },
     
