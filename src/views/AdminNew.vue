@@ -27,6 +27,7 @@
                       ]"
                       color="purple darken-2"
                       label="Nombre*"
+                      v-model="nombre"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -39,6 +40,7 @@
                       ]"
                       color="purple darken-2"
                       label="CorreoElectrónico*"
+                      v-model="email"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -51,6 +53,7 @@
                       ]"
                       color="purple darken-2"
                       label="NombreUsuario*"
+                      v-model="nombreUse"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -69,6 +72,7 @@
                       ]"
                       color="purple darken-2"
                       label="Apellidos*"
+                      v-model="apellido"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -82,6 +86,7 @@
                       ]"
                       color="purple darken-2"
                       label="Telefono/Celular*"
+                      v-model="telefono"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -106,7 +111,6 @@
                   <v-flex col-12>
                     <v-flex col-12 text-right>
                       <v-btn
-                        
                         color="blue-grey"
                         class="mx-2 success"
                         @click="saveAdmin()"
@@ -124,7 +128,7 @@
                         type="success"
                         v-if="updatedAlert"
                       >
-                        Se agregó el Admin satisfactoriamente.
+                        Se agregó el Administrador satisfactoriamente.
                       </v-alert>
                     </v-flex>
                   </v-flex>
@@ -151,16 +155,43 @@ export default {
     show2: true,
     show3: false,
     show4: false,
-    password: "Password",
+    password: "",
+    nombre: "",
+    apellido: "",
+    email: "",
+    telefono: "",
+    nombreUse: "",
     rules: {
       required: (value) => !!value || "Campo Requerido.",
       min: (v) => v.length >= 8 || "Minimo 8 caracteres",
     },
   }),
   methods: {
-    saveAdmin() {
-      let currentTr = {};
-
+    async saveAdmin() {
+      let currentTr = {
+        idAdministrador: 0,
+        nombres: this.nombre,
+        apellidos: this.apellido,
+        email: this.email,
+        telefono: this.telefono,
+        contrasena: this.password
+      };
+      const response = await fetch("http://localhost:3304/Administrador", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(currentTr)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response)
+            });
       this.updatedAlert = true;
     },
   },

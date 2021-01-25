@@ -27,7 +27,9 @@
                       ]"
                       color="purple darken-2"
                       label="NombreOdontólogo*"
+                      v-model="nombre"
                       required
+                      
                     ></v-text-field>
                   </v-flex>
 
@@ -40,6 +42,7 @@
                       :items="['CC', 'TI']"
                       filled
                       label="Tipo Documento*"
+                      v-model="tipoDoc"
                       dense
                     ></v-select>
                   </v-flex>
@@ -59,7 +62,7 @@
                             (val) =>
                               (val || '').length > 0 || 'Campo Requerido',
                           ]"
-                          v-model="date"
+                          v-model="date" 
                           label="FechaNacimiento*"
                           prepend-icon="mdi-calendar"
                           readonly
@@ -91,6 +94,7 @@
                       ]"
                       color="purple darken-2"
                       label="DirecciónConsultorio*"
+                      v-model="dirAten"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -103,6 +107,7 @@
                       ]"
                       color="purple darken-2"
                       label="CorreoElectrónico*"
+                      v-model="email"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -115,6 +120,7 @@
                       ]"
                       color="purple darken-2"
                       label="NombreUsuario*"
+                      v-model="nombreUsu"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -133,6 +139,7 @@
                       ]"
                       color="purple darken-2"
                       label="ApellidosOdontologo*"
+                      v-model="apellido"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -146,6 +153,7 @@
                       ]"
                       color="purple darken-2"
                       label="Número Documento*"
+                      v-model="numDoc"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -157,6 +165,7 @@
                       ]"
                       row
                       label="Genero*"
+                      v-model="genero"
                     >
                       <v-radio
                         label="Femenino"
@@ -179,6 +188,7 @@
                       ]"
                       color="purple darken-2"
                       label="Telefono/Celular*"
+                      v-model="telefono"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -191,6 +201,7 @@
                       ]"
                       color="purple darken-2"
                       label="NúmeroRegistroProfesional*"
+                      v-model="numRegistro"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -226,6 +237,7 @@
                 name="input-7-4"
                 color="black"
                 label="Descripción Corta del Odontologo*"
+                v-model="descripcion"
               ></v-textarea>
             </v-flex>
           </v-layout>
@@ -274,13 +286,54 @@ export default {
     show2: true,
     show3: false,
     show4: false,
-    password: "Password",
-    
+    password: "",
+    nombre: "",
+    apellido: "",
+    tipoDoc:"",
+    date:"",
+    dirAten:"",
+    email:"",
+    numDoc:"",
+    genero:"",
+    telefono:"",
+    nombreUsu:"",
+    numRegistro:"",
+    descripcion:""
   }),
   
   methods: {
-    saveOdonto() {
-      let currentOdonto = {};
+    async saveOdonto() {
+      let currentOdonto = {
+        idOdontologo: 0,
+        nombres: this.nombre,
+        apellidos: this.apellido,
+        tipoDoc: this.tipoDoc,
+        documentoIdentidad: this.numDoc,
+        direccionAtencion: this.dirAten,
+        email: this.email,
+        genero: this.genero,
+        telefono: this.telefono,
+        contrasena: this.password,
+        fechaNacimiento: this.date,
+        numeroRegistro: this.numRegistro,
+        descripcion: this.descripcion
+      };
+      const response = await fetch("http://localhost:3304/Odontologo", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(currentOdonto)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response)
+            });
 
       this.updatedAlert = true;
     },

@@ -140,15 +140,15 @@ export default {
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
-              console.log(response[0])
+              console.log(response[1])
               if (response[0]) {
-                if (response[0].rol == "1"){
+                if (response[0].rol == "0"){
                 this.$store.state.user.email = this.email                
-                this.$store.state.user.rol = "0"
+                this.$store.state.user.rol = "1"
                 this.$router.push('/').catch(()=>{})  
                 }
                 this.$store.state.user.email = this.email
-                this.$store.state.user.rol = "1"  
+                this.$store.state.user.rol = "0"  
                 this.$router.push('/').catch(()=>{}
                 )
               } else {
