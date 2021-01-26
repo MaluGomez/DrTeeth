@@ -170,12 +170,12 @@
                       <v-radio
                         label="Femenino"
                         color="#F7B1F4"
-                        value="primary"
+                        value="F"
                       ></v-radio>
                       <v-radio
                         label="Masculino"
                         color="primary"
-                        value="secondary"
+                        value="M"    
                       ></v-radio>
                     </v-radio-group>
                   </v-flex>
