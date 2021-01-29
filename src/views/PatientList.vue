@@ -1331,226 +1331,9 @@ export default {
       alertColor: false,
 
       patientsList: [
-        {
-          id: "1",
-          name: "Andres Felipe",
-          lastname: " Herrera Jeréz",
-          address: "Barrio peligroso x2!!!",
-          email: "andres@ag.com",
-          phone: "3685675675",
-          eps: "nueva eps",
-          cc: "12312321421",
-          rhP:"O+",
-          gender:"M",
-          hb:"1998-18-02",
-          tipDoc:"CC",
-          nameAcudient:"",
-          lastNameAcudient:"",
-          telAcudient:"",
-          parentAcudient:"",
-          question1:"SI",       
-         question2:"NO", 
-         question3:"NO", 
-          question4:"NO", 
-          question5:"NO", 
-          question6:"NO", 
-          observacionesA:"Nada", 
-          tratamiento: {
-            mt: "muy gay",
-            odt: "aqui se lista el odontograma de Andres",
-            obs: "no se quiere comprar el rust",
-          },
-          consulta: {
-            odt1: "New odt Andres",
-            diagnostico: "",
-            plantrat: "",
-          },
-        },
-        {
-          id: "2",
-          name: "Fabian Andres",
-          lastname: "Barreto",
-          address: "barrio Fino, de pupis!",
-          email: "fabi@ag.com",
-          phone: "34234654531231",
-          rhP:"O+",
-          gender:"M",
-          eps: "nueva eps",
-          cc: "098765432",
-          rhP:"O-",
-          gender:"M",
-          hb:"1998-21-04",
-          tipDoc:"CC",
-          nameAcudient:"",
-          lastNameAcudient:"",
-          telAcudient:"",
-          parentAcudient:"",
-          question1:"SI",       
-         question2:"NO", 
-         question3:"NO", 
-          question4:"NO", 
-          question5:"NO", 
-          question6:"NO", 
-          observacionesA:"Nadax2",
-
-          tratamiento: {
-            mt: "muy pupi",
-            odt: "aqui se lista el odontograma de Fabian",
-            obs: "picada de loca",
-          },
-          consulta: {
-            odt1: "New odt Fabi",
-            diagnostico: "",
-            plantrat: "",
-          },
-        },
-        {
-          id: "3",
-          name: "Wilmer Alberto ",
-          lastname: "Monoga",
-          address: "Barrio peligroso!!!",
-          email: "casper@ag.com",
-          phone: "34231231",
-          eps: "nueva eps",
-          cc: "165655",
-          rhP:"A+",
-          gender:"M",
-          hb:"1999-16-07",
-          tipDoc:"CC",
-          question1:"SI",       
-         question2:"NO", 
-         question3:"NO", 
-          question4:"NO", 
-          question5:"NO", 
-          question6:"NO", 
-          observacionesA:"Nada",
-          nameAcudient:"BEBELEAN",
-          lastNameAcudient:"IO NO SHE",
-          telAcudient:"NO TIENE PAILA",
-          parentAcudient:"SIN FAMILY",
-
-          tratamiento: {
-            mt: " muy casper el",
-            odt: "aqui se lista el odontograma de Wilmer",
-            obs: "nunca se ve en el grupo",
-          },
-          consulta: {
-            odt1: "New odt Wilmer",
-            diagnostico: "",
-            plantrat: "",
-          },
-        },
-        {
-          id: "4",
-          name: "Andres",
-          lastname: "Angarita",
-          address: "Barrio re-Peligroso!!!",
-          email: "angaporros@ag.com",
-          phone: "34231231",
-          eps: "NO TIENE",
-          cc: "1221421",
-          rhP:"O+",
-          gender:"M",
-          hb:"1998-15-08",
-          tipDoc:"CC",
-          nameAcudient:"",
-          lastNameAcudient:"",
-          telAcudient:"",
-          parentAcudient:"",
-          question1:"SI",       
-         question2:"NO", 
-         question3:"NO", 
-          question4:"NO", 
-          question5:"NO", 
-          question6:"NO", 
-          observacionesA:"Nada",
-
-          tratamiento: {
-            mt: "mucho porro diario",
-            odt: "aqui se lista el odontograma de Angarita",
-            obs: "mucha plata en ecopetrol xd",
-          },
-          consulta: {
-            odt1: "New odt Angaporros",
-            diagnostico: "",
-            plantrat: "",
-          },
-        },
-        {
-          id: "5",
-          name: "Maria Lucia",
-          lastname: "Gomez Rodriguez",
-          address: "Por alla no se puede ir!!!",
-          email: "malu@asdasd",
-          phone: "3155727704",
-          eps: "sura",
-          cc: "321421",
-          rhP:"O+",
-          gender:"F",
-          hb:"1999-23-01",
-          tipDoc:"CC",
-          nameAcudient:"",
-          lastNameAcudient:"",
-          telAcudient:"",
-          parentAcudient:"",
-          question1:"NO",       
-         question2:"NO", 
-         question3:"NO", 
-          question4:"NO", 
-          question5:"NO", 
-          question6:"NO", 
-          observacionesA:"Nada",
-
-          tratamiento: {
-            mt: " es malu...",
-            odt: "aqui se lista el odontograma de Malu",
-            obs: "no hace el proyecto a tiempo!!!!",
-          },
-          consulta: {
-            odt1: "New odt Maluks",
-            diagnostico: "",
-            plantrat: "",
-          },
-        },
-        {
-          id: "6",
-          name: "Jhon edinson ",
-          lastname: "Castañeda Oviedo",
-          address: "La puta mrd!!!",
-          email: "jhon@asdasd",
-          phone: "34231231",
-          eps: "nueva eps",
-          cc: "675566721",
-          rhP:"O+",
-          gender:"M",
-          hb:"1998-01-01",
-          tipDoc:"CC",
-          nameAcudient:"",
-          lastNameAcudient:"",
-          telAcudient:"",
-          parentAcudient:"",
-          question1:"SI",       
-         question2:"NO", 
-         question3:"NO", 
-          question4:"NO", 
-          question5:"NO", 
-          question6:"NO", 
-          observacionesA:"Nada",
-
-          tratamiento: {
-            mt: "yon soy yon",
-            odt: "aqui se lista el odontograma de yon",
-            obs: "tiene covid :v",
-          },
-          consulta: {
-            odt1: "New odt Shongo",
-            diagnostico: "",
-            plantrat: "",
-          },
-        },
+       
       ],
-    }),
-  
+    }),  
 
   methods: {
     selectUser(user) {
@@ -2171,6 +1954,28 @@ export default {
     },
   },
   mounted() {
+    console.log("Montando todo!")
+    fetch ("http://localhost:3304/Paciente")
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+        .then(response => {
+          response.forEach(element => {
+            let itemTemp = {}
+            itemTemp.id = element.idPaciente
+            itemTemp.name = element.nombres
+            itemTemp.lastname = element.apellidos
+            itemTemp.cc = element.numeroIdentificacion
+            itemTemp.tipDoc = element.tipoIdentificacion
+            itemTemp.hb = element.fechaNacimiento
+            itemTemp.address = element.direccion
+            itemTemp.gender = element.genero
+            itemTemp.rhP = element.rh
+            itemTemp.phone = element.telefono
+            itemTemp.email = element.email
+            itemTemp.eps = element.eps
+            this.patientsList.push(itemTemp)
+          });
+        });
     if (this.odontograma) {
       {
         this.dientesLecheSup = this.odontograma.dientesLecheSup;

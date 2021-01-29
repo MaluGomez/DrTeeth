@@ -35,6 +35,7 @@
                                 ]"
                                 color="purple darken-2"
                                 label="NombrePaciente*"
+                                v-model="nombre"
                                 required
                               ></v-text-field>
                             </v-flex>
@@ -51,6 +52,7 @@
                                 color="purple darken-2"
                                 prepend-inner-icon="mdi-account-box-outline"
                                 label="ApellidosPaciente*"
+                                v-model="apellido"
                                 required
                               ></v-text-field>
                             </v-flex>
@@ -109,6 +111,7 @@
                                 ]"
                                 row
                                 label="Genero*"
+                                v-model="Genero"
                               >
                                 <v-radio
                                   label="F"
@@ -134,6 +137,7 @@
                               ]"
                               color="purple darken-2"
                               label="Dirección*"
+                              v-model="direccion"
                               required
                             ></v-text-field>
                           </v-flex>
@@ -149,6 +153,7 @@
                                 ]"
                                 color="purple darken-2"
                                 label="Correo Electronico*"
+                                v-model="email"
                                 required
                               ></v-text-field>
                             </v-flex>
@@ -163,6 +168,7 @@
                                 ]"
                                 color="purple darken-2"
                                 label="Telefono/Celular*"
+                                v-model="telefono"
                                 required
                               ></v-text-field>
                             </v-flex>
@@ -180,6 +186,7 @@
                               :items="['CC', 'TI']"
                               filled
                               label="Tipo Documento*"
+                              v-model="tipoDoc"
                               dense
                             ></v-select>
                           </v-flex>
@@ -193,6 +200,7 @@
                               ]"
                               color="purple darken-2"
                               label="Número Documento*"
+                              v-model="numDoc"
                               required
                             ></v-text-field>
                           </v-flex>
@@ -217,6 +225,7 @@
                               ]"
                               filled
                               label="Tipo de Sangre*"
+                              v-model="rh"
                               dense
                             ></v-select>
                           </v-flex>
@@ -229,6 +238,7 @@
                               ]"
                               color="purple darken-2"
                               label="EPS*"
+                              v-model="eps"
                               required
                             ></v-text-field>
                           </v-flex>
@@ -589,10 +599,53 @@ export default {
     modal: false,
     menu2: false,
     updatedAlert: false,
+    nombre: "",
+    apellido: "",
+    tipoDoc:"",
+    date:"",
+    direccion:"",
+    email:"",
+    numDoc:"",
+    Genero:"",
+    telefono:"",
+    rh:"",
+    eps:""
+
   }),
-  methods: {
-    savePa() {
-      let currentPatient = {};
+
+    methods: {
+    async savePa() {
+      let currentPatient = {
+        idPaciente: 0,
+        nombres: this.nombre,
+        apellidos: this.apellido,
+        tipoIdentificacion: this.tipoDoc,
+        numeroIdentificacion: this.numDoc,
+        direccion: this.direccion,
+        email: this.email,
+        genero: this.Genero,
+        telefono: this.telefono,
+        rh: this.rh,
+        fechaNacimiento: this.date,
+        eps: this.eps
+      };
+      const response = await fetch("http://localhost:3304/Paciente", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(currentPatient)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response)
+            });
+            
 
       this.updatedAlert = true;
     },

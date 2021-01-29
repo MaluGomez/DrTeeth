@@ -8,7 +8,7 @@
       />
 
       <!-- Este es el menu para rol de Odontologo -->
-      <v-list v-if="$store.state.user.rol == '1'">
+      <v-list v-if="$store.state.user.rol == '0'">
         <v-list-item link @click="$router.push('/perfil').catch(()=>{})">
           <v-list-item-icon>
             <v-icon>mdi-account</v-icon>
@@ -80,7 +80,7 @@
       <!-- FIN DEL ROL DE ODONTOLOGO -->
 
       <!-- Este es el menu para rol de Admin -->
-      <v-list v-if="$store.state.user.rol == '0'">
+      <v-list v-if="$store.state.user.rol == '1'">
         <!-- Este es u ngrupo para listar los items -->
         <v-list-group
         prepend-icon="mdi-account-multiple"
