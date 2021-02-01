@@ -18,7 +18,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <!-- Este es u ngrupo para listar los items -->
+        <!-- Este es un grupo para listar los items -->
         <v-list-group
         prepend-icon="mdi-account-multiple"
         :value="false"
@@ -46,7 +46,7 @@
         </v-list-group>
         <!-- Fin del group -->
 
-        <!-- Este es u ngrupo para listar los items -->
+        <!-- Este es un grupo para listar los items -->
         <v-list-group
         prepend-icon="mdi-book-open"
         :value="false"
@@ -78,6 +78,8 @@
 
       </v-list>
       <!-- FIN DEL ROL DE ODONTOLOGO -->
+
+
 
       <!-- Este es el menu para rol de Admin -->
       <v-list v-if="$store.state.user.rol == '1'">

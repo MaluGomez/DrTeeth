@@ -8,11 +8,6 @@
       dark
     >
       <v-layout white>
-        <v-layout wrap>
-          <v-flex col-12>
-             <v-btn text small color="primary" @click="$router.push('/AgendarCita').catch(()=>{})">Agendar Cita</v-btn>
-          </v-flex>
-        </v-layout>
         <v-flex col-12 align-self-center style="padding: 50px">
           <div class="d-flex justify-center">
             <v-img
@@ -31,12 +26,13 @@
               rounded
               dense
             >
-            </v-text-field>
+            </v-text-field> 
             
             <v-text-field
               v-model="password"
               label="Contraseña"
-              :type="pass ? 'text' : 'password'"
+              :type="show4 ? 'text' : 'password'"
+              
               :rules="[
                 (value) => !!value || 'Required.',
                 (value) => value.length >= 3 || 'Min 8 characters',
@@ -44,6 +40,8 @@
               outlined
               rounded
               dense
+              :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append="show4 = !show4"
             >
             </v-text-field>
             
@@ -61,6 +59,8 @@
             >
             
           </v-form>
+          
+           
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -88,7 +88,8 @@
           >
            <p> Holaaa!! Te saluda el equipo de Dr.Teeth
              Si tienes problemas con tu usuario o contraseña
-             envianos un correo y te ayudaremos a solucionar
+             envianos un correo (proyectodrteeth@hotmail.com)
+              y te ayudaremos a solucionar
              tu inconveniente. Gracias </p>
           </v-alert>
           
@@ -104,6 +105,7 @@ export default {
     return {
       alert: false,
       pass: false,
+       show4: false,
       valid: false,
       rulesEmail: {
         required: (value) => !!value || "Required.",

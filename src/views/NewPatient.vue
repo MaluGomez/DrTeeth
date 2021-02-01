@@ -265,6 +265,7 @@
                                         prepend-inner-icon="mdi-account-box-outline"
                                         color="purple darken-2"
                                         label="NombreAcudiente"
+                                        v-model="nomAcu"
                                         required
                                       ></v-text-field>
                                     </v-flex>
@@ -277,6 +278,7 @@
                                         color="purple darken-2"
                                         prepend-inner-icon="mdi-account-box-outline"
                                         label="ApellidosAcudiente*"
+                                        v-model="apelliodAcu"
                                         required
                                       ></v-text-field>
                                     </v-flex>
@@ -293,6 +295,7 @@
                                         prepend-inner-icon="mdi-cellphone"
                                         color="purple darken-2"
                                         label="TelefonoAcudiente"
+                                        v-model="telAcu"
                                         required
                                       ></v-text-field>
                                     </v-flex>
@@ -305,6 +308,7 @@
                                         color="purple darken-2"
                                         prepend-inner-icon="mdi-account-box-outline"
                                         label="Parentesco"
+                                        v-model="parentesco"
                                         required
                                       ></v-text-field>
                                     </v-flex>
@@ -340,6 +344,7 @@
                                 ]"
                                 color="purple darken-2"
                                 label="Nombre Odontologo*"
+                                v-model="nomOdon"
                                 required
                               ></v-text-field>
                             </v-flex>
@@ -354,6 +359,7 @@
                                 ]"
                                 color="purple darken-2"
                                 label="Apellidos Odontologo*"
+                                v-model="apellidoOdon"
                                 required
                               ></v-text-field>
                             </v-flex>
@@ -366,53 +372,13 @@
                                 prepend-inner-icon="mdi-account-box-outline"
                                 color="purple darken-2"
                                 label="Nombre Asistente"
+                                v-model="nomAsistente"
                                 required
                               ></v-text-field>
                             </v-flex>
                           </v-layout>
 
-                          <v-layout wrap>
-                            <v-flex col-12>
-                              <v-dialog
-                                ref="dialog"
-                                v-model="modal"
-                                :return-value.sync="date"
-                                persistent
-                                width="290px"
-                              >
-                                <template v-slot:activator="{ on, attrs }">
-                                  <v-text-field
-                                    :rules="[
-                                      (val) =>
-                                        (val || '').length > 0 ||
-                                        'Campo Requerido',
-                                    ]"
-                                    v-model="date"
-                                    label="FechaCreacionHC*"
-                                    prepend-icon="mdi-calendar"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                  ></v-text-field>
-                                </template>
-                                <v-date-picker v-model="date" scrollable>
-                                  <v-spacer></v-spacer>
-                                  <v-btn
-                                    text
-                                    color="primary"
-                                    @click="modal = false"
-                                    >Cancel</v-btn
-                                  >
-                                  <v-btn
-                                    text
-                                    color="primary"
-                                    @click="$refs.dialog.save(date)"
-                                    >OK</v-btn
-                                  >
-                                </v-date-picker>
-                              </v-dialog>
-                            </v-flex>
-                          </v-layout>
+                          
                         </v-row>
 
                         <v-flex>
@@ -609,9 +575,18 @@ export default {
     Genero:"",
     telefono:"",
     rh:"",
-    eps:""
-
+    eps:"",
+    nomAcu:"",
+    apelliodAcu:"",
+    telAcu:"",
+    parentesco:"",
+    nomOdon:"",
+    apellidoOdon:"",
+    nomAsistente:"",
+    nomAsistente:"",
+    
   }),
+  
 
     methods: {
     async savePa() {
@@ -645,7 +620,56 @@ export default {
             .then(response => {
               console.log(response)
             });
-            
+      
+      /**let currentPatientAcu = {
+        idAcudiente: 0,
+        nombres: this.nomAcu,
+        apellidos: this.apelliodAcu,
+        telefono: this.telAcu,
+        parentesco: this.parentesco
+      };
+      const response = await fetch("http://localhost:3304/Acudiente", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(currentPatientAcu)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response)
+            });
+
+     /** let currentPatientAntece = {
+        idAcudiente: 0,
+        nombres: this.nomAcu,
+        apellidos: this.apelliodAcu,
+        telefono: this.telAcu,
+        parentesco: this.parentesco
+      };
+
+
+      const response = await fetch("http://localhost:3304/Acudiente", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(currentPatientAcu)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response)
+            });*/
 
       this.updatedAlert = true;
     },

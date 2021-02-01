@@ -22,129 +22,17 @@
             :items="appointmentList"
             :search="search"
           >
-            <template v-slot:item.opciones="{ item }">
-              <v-btn color="primary mx-2" @click="(overlayPos = !overlayPos),selectUser(item)">
-                Posponer
-              </v-btn>
+            <template v-slot:item.opciones>
+              <v-btn color="primary mx-2">
+              Cita Realizada
+              </v-btn> 
             </template>
           </v-data-table>
         </v-card>
       </v-flex>
     </v-layout>
 
-    <v-overlay :value="overlayPos" absolute>
-      <v-card light style="width: 100%">
-        <v-layout wrap>
-          <v-flex col-12>
-            <v-layout wrap>
-              <v-flex col-12>
-            <v-text-field
-            filled
-            prepend-inner-icon="mdi-account-box-outline"
-            style="width:80%; display: block; margin-left: auto; margin-right: auto; " 
-              label="Nombre"
-              v-model="nombrePaciente"
-              name="input-7-1"
-              placeholder="Placeholder"
-              counter=""
-            ></v-text-field>
-              </v-flex>
-            </v-layout>
-            <v-flex col-12>
-              <v-dialog
-                ref="dialog"
-                v-model="modal2"
-                :return-value.sync="time"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    filled
-                    :rules="[
-                      (val) => (val || '').length > 0 || 'Campo Requerido',
-                    ]"
-                    v-model="time"
-                    label="Hora*"
-                    prepend-icon="mdi-timer"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
 
-                <v-time-picker v-if="modal2" v-model="time" full-width>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal2 = false"
-                    >Cancel</v-btn
-                  >
-                  <v-btn text color="primary" @click="$refs.dialog.save(time)"
-                    >OK</v-btn
-                  >
-                </v-time-picker>
-              </v-dialog>
-            </v-flex>
-
-            <!--FECHA-->
-
-            <v-flex col-12>
-              <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                :return-value.sync="date"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    filled
-                    :rules="[
-                      (val) => (val || '').length > 0 || 'Campo Requerido',
-                    ]"
-                    v-model="date"
-                    label="Fecha*"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="date" no-title scrollable>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false"
-                    >Cancel</v-btn
-                  >
-                  <v-btn text color="primary" @click="$refs.menu.save(date)"
-                    >OK</v-btn
-                  >
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-          </v-flex>
-          <v-flex col-12>
-            <v-btn @click="savePos()" class="mx-2 success">Guardar</v-btn>
-            <v-btn
-              @click="(overlayPos = false), (updatedAlert = false)"
-              class="mx-2 red"
-              >cerrar</v-btn
-            >
-          </v-flex>
-          <v-flex style="width: 100%">
-            <v-alert
-              dense
-              transition="scale-transition"
-              text
-              type="success"
-              v-if="updatedAlert"
-            >
-              Los cambios se guardaron satisfactoriamente.
-            </v-alert>
-          </v-flex>
-        </v-layout>
-      </v-card>
-    </v-overlay>
   </div>
 </template>
 
@@ -160,6 +48,8 @@ export default {
     overlayPos: false,
     nombrePaciente:"",
     updatedAlert: false,
+    time:"",
+   
 
     selUser: {},
     headers: [
@@ -194,6 +84,37 @@ export default {
       },
     ],
   }),
+
+  mounted () {
+    console.log("Montando todo!")
+    fetch ("http://localhost:3304/Cita")
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+        .then(response => {
+          response.forEach(element => {
+            let itemTemp = {}
+            itemTemp.id = element.idCita
+            itemTemp.nombrePaciente = element.nombrePaciente
+            itemTemp.time = element.hora
+            this.appointmentList.push(itemTemp)
+          });
+        });
+  },
+  /**mounted () {
+    console.log("Montando todo!")
+    fetch ("http://localhost:3304/Cita/Odontologo/:idOdontologo")
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+        .then(response => {
+          response.forEach(element => {
+            let itemTemp = {}
+            itemTemp.id = element.idCita
+            itemTemp.nombrePaciente = element.nombrePaciente
+            itemTemp.time = element.hora
+            this.appointmentList.push(itemTemp)
+          });
+        });
+  },*/
 
   methods: {
     selectUser(user) {

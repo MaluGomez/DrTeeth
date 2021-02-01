@@ -27,6 +27,7 @@
                       ]"
                       color="purple darken-2"
                       label="NombrePaciente*"
+                      v-model="nomPaciente"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -39,6 +40,7 @@
                       :items="['CC', 'TI']"
                       filled
                       label="Tipo Documento*"
+                      v-model="tipoDoc"
                       dense
                     ></v-select>
                   </v-flex>
@@ -96,6 +98,7 @@
                       ]"
                       color="purple darken-2"
                       label="ApellidosPaciente*"
+                      v-model="apellidoPaci"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -108,6 +111,7 @@
                       ]"
                       color="purple darken-2"
                       label="Número Documento*"
+                      v-model="numDoc"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -195,10 +199,43 @@ export default {
     modal2: false,
     time: null,
     updatedAlert: false,
+    nomPaciente:"",
+    apellidoPaci:"",
+    tipoDoc:"",
+    date:"",
+    numDoc:"",
+    time:""
+
   }),
   methods: {
-    saveCita() {
-      let currentCita = {};
+    async saveCita() {
+      let currentCita = {
+        idCita:0,
+        nombrePaciente:this.nomPaciente,
+        apellidoPaciente: this.apellidoPaci,
+        fecha: this.date, 
+        numDoc:this.numDoc,
+        hora:this.time,
+        idPaciente:1,
+        idOdontologo:3
+
+      };
+      const response = await fetch("http://localhost:3304/Cita", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(currentCita)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log(response)
+            });
 
       this.updatedAlert = true;
     },
