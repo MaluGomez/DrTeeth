@@ -8,7 +8,7 @@
       />
 
       <!-- Este es el menu para rol de Odontologo -->
-      <v-list v-if="$store.state.user.rol == '0'">
+      <v-list v-if="$store.state.user.rol == '1'">
         <v-list-item link @click="$router.push('/perfil').catch(()=>{})">
           <v-list-item-icon>
             <v-icon>mdi-account</v-icon>
@@ -38,7 +38,7 @@
              Nueva Consulta
            </v-list-item-content>
         </v-list-item>-->
-        <v-list-item link @click="$router.push('/nuevopaciente').catch(()=>{})">
+        <v-list-item link @click="$router.push('/nuevoPaciente').catch(()=>{})">
            <v-list-item-content>
             Nuevo Paciente
            </v-list-item-content>
@@ -82,7 +82,7 @@
 
 
       <!-- Este es el menu para rol de Admin -->
-      <v-list v-if="$store.state.user.rol == '1'">
+      <v-list v-if="$store.state.user.rol == '0'">
         <!-- Este es u ngrupo para listar los items -->
         <v-list-group
         prepend-icon="mdi-account-multiple"
@@ -93,7 +93,7 @@
           <v-list-item-title>Admin</v-list-item-title>
         </template>
         <!-- estos son los items que quiero listar -->
-        <v-list-item link @click="$router.push('/listaadmin').catch(()=>{})" >
+        <v-list-item link @click="$router.push('/listaAdmin').catch(()=>{})" >
            <v-list-item-content >
              Lista de Administradores
            </v-list-item-content>
@@ -116,12 +116,12 @@
           <v-list-item-title>Odontologos</v-list-item-title>
         </template>
         <!-- estos son los items que quiero listar -->
-        <v-list-item link @click="$router.push('/listaodontologos').catch(()=>{})" >
+        <v-list-item link @click="$router.push('/listaOdontologos').catch(()=>{})" >
            <v-list-item-content >
              Lista de Odontologos
            </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push('/nuevoodontologo').catch(()=>{})" >
+        <v-list-item link @click="$router.push('/nuevoOdontologo').catch(()=>{})" >
            <v-list-item-content>
              Nuevo Odontologo
            </v-list-item-content>
@@ -150,6 +150,7 @@ export default {
   methods: {
     Logout () {
       this.$store.state.user = {}
+      localStorage.clear()
       this.$router.push('/Login').catch(()=>{})
     }
   },

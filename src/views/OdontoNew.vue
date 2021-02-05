@@ -103,7 +103,7 @@
                       filled
                       prepend-inner-icon="mdi-gmail"
                       :rules="[
-                        (val) => (val || '').length > 0 || 'Campo Requerido',
+                        (val) => (val || '').length > 0 || 'Campo Requerido', v => /.+@.+/.test(v) || 'Ingrese un correo valido'
                       ]"
                       color="purple darken-2"
                       label="CorreoElectrónico*"
@@ -114,16 +114,19 @@
                   <v-flex col-12>
                     <v-text-field
                       filled
-                      prepend-inner-icon="mdi-account-box"
-                      :rules="[
-                        (val) => (val || '').length > 0 || 'Campo Requerido',
-                      ]"
-                      color="purple darken-2"
-                      label="NombreUsuario*"
-                      v-model="nombreUsu"
-                      required
+                      v-model="password"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[rules.password,  (val) => (val || '').length > 0 || 'Campo Requerido']"
+                      :type="show1 ? 'text' : 'password'"
+                      name="input-10-1"
+                      label="ContraseñaOdontólogo"
+                      hint="Min. 8 caracteres con al menos una letra mayúscula, un número y un carácter especial"
+                      counter
+                      @click:append="show1 = !show1"
                     ></v-text-field>
                   </v-flex>
+
+
                 </v-layout>
               </v-flex>
 
@@ -155,6 +158,7 @@
                       label="Número Documento*"
                       v-model="numDoc"
                       required
+                      type="number"
                     ></v-text-field>
                   </v-flex>
 
@@ -190,6 +194,7 @@
                       label="Telefono/Celular*"
                       v-model="telefono"
                       required
+                      type="number"
                     ></v-text-field>
                   </v-flex>
                   <v-flex col-12>
@@ -203,23 +208,11 @@
                       label="NúmeroRegistroProfesional*"
                       v-model="numRegistro"
                       required
+                      type="number"
                     ></v-text-field>
                   </v-flex>
 
-                  <v-flex col-12>
-                    <v-text-field
-                      filled
-                      v-model="password"
-                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :rules="[(value) => !!value || 'Campo Requerido.',(v) => v.length >= 8 || 'Minimo 8 caracteres']"
-                      :type="show1 ? 'text' : 'password'"
-                      name="input-10-1"
-                      label="ContraseñaOdontólogo"
-                      hint="Pon al menos 8 caracteres"
-                      counter
-                      @click:append="show1 = !show1"
-                    ></v-text-field>
-                  </v-flex>
+                  
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -265,6 +258,14 @@
                   Se agregó el odontologo satisfactoriamente.
                 </v-alert>
               </v-flex>
+              <v-flex col-12>
+                      <v-alert type="error" dense transition="scale-transition" text v-if="alertError">
+                        Revise los datos digitados, todos los campos deben estar llenos.
+                      </v-alert>
+                    </v-flex>
+
+
+
             </v-flex>
           </v-layout>
         </v-card>
@@ -282,6 +283,7 @@ export default {
     modal2: false,
     time: null,
     updatedAlert: false,
+    alertError: false,
     show1: false,
     show2: true,
     show3: false,
@@ -298,7 +300,16 @@ export default {
     telefono:"",
     nombreUsu:"",
     numRegistro:"",
-    descripcion:""
+    descripcion:"",
+    rules: {
+        password: value => {
+          const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+          return (
+            pattern.test(value) ||
+            "Min. 8 caracteres con al menos una letra mayúscula, un número y un carácter especial."
+          );
+        }
+    },
   }),
   
   methods: {
@@ -332,7 +343,6 @@ export default {
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
-              console.log(response)
             });
 
       this.updatedAlert = true;

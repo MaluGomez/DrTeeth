@@ -22,8 +22,8 @@
             :items="appointmentList"
             :search="search"
           >
-            <template v-slot:item.opciones>
-              <v-btn color="primary mx-2">
+            <template v-slot:item.opciones="{ item }">
+              <v-btn color="primary mx-2" @click="deleteCita(item)">
               Cita Realizada
               </v-btn> 
             </template>
@@ -60,69 +60,30 @@ export default {
       { text: "CC", align: "center", value: "cc" },
       { text: "Opciones", align: "center", value: "opciones" },
     ],
-    appointmentList: [
-      {
-        id: "1",
-        name: "Andres Felipe ",
-        dateC: "2021-13-01",
-        time: "01:20",
-        cc: "12312321421",
-      },
-      {
-        id: "2",
-        name: "Maria Lucia",
-        dateC: "2021-14-01",
-        time: "03:20",
-        cc: "12456721421",
-      },
-      {
-        id: "3",
-        name: "Juan Camilo",
-        dateC: "2021-13-01",
-        time: "02:20",
-        cc: "12312320987",
-      },
-    ],
+    appointmentList: [],
   }),
 
   mounted () {
-    console.log("Montando todo!")
-    fetch ("http://localhost:3304/Cita")
+    fetch ("http://localhost:3304/Cita/Odontologo/" + this.$store.state.user.idOdontologo)
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
         .then(response => {
+          
           response.forEach(element => {
             let itemTemp = {}
             itemTemp.id = element.idCita
-            itemTemp.nombrePaciente = element.nombrePaciente
+            itemTemp.name = element.nombrePaciente
+            itemTemp.dateC = element.fecha.substring(0,10)
             itemTemp.time = element.hora
+            itemTemp.cc = element.numDoc
             this.appointmentList.push(itemTemp)
           });
         });
   },
-  /**mounted () {
-    console.log("Montando todo!")
-    fetch ("http://localhost:3304/Cita/Odontologo/:idOdontologo")
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-        .then(response => {
-          response.forEach(element => {
-            let itemTemp = {}
-            itemTemp.id = element.idCita
-            itemTemp.nombrePaciente = element.nombrePaciente
-            itemTemp.time = element.hora
-            this.appointmentList.push(itemTemp)
-          });
-        });
-  },*/
 
   methods: {
     selectUser(user) {
       this.selUser = user;
-      this.nombrePaciente = user.name;
-      this.time = user.time;
-      
- 
     },
     savePos() {
       this.appointmentList[this.appointmentList.indexOf(this.selUser)].name = this.nombrePaciente;
@@ -130,6 +91,20 @@ export default {
       this.appointmentList[this.appointmentList.indexOf(this.selUser)].dateC = this.date
       this.updatedAlert = true;
     },
+    async deleteCita(user) {
+      this.selectUser(user)
+      
+      await fetch ("http://localhost:3304/Cita/" + this.selUser.id, {method: 'DELETE'})
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          if (!response.error) {
+              this.appointmentList.splice(this.appointmentList.indexOf(this.selUser), 1);
+          } else {
+
+          }
+      });
+    }
   },
 };
 </script>

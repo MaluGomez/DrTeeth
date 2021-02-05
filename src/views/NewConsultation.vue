@@ -373,6 +373,7 @@
               Guardar
             </v-btn>
           </div>
+          
         </v-card>
       </v-flex>
     </v-layout>
@@ -826,7 +827,7 @@ export default {
   },
   methods: {
     changeColor(id) {
-      console.log(document.getElementById(id).style.color);
+      
       if (this.selColor == this.colorPrimerBoton) {
         if (document.getElementById(id).style.color != this.colorTercerBoton) {
           document.getElementById(id).style.color = this.colorPrimerBoton;
@@ -1306,12 +1307,6 @@ export default {
       } else {
         this.alertColor = true;
       }
-      /*
-      console.log(this.dienteSup)
-      console.log(this.dienteInf)
-      console.log(this.dientesLecheSup)
-      console.log(this.dientesLecheInf)
-      */
     },
   },
   mounted() {

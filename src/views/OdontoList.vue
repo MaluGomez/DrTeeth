@@ -67,7 +67,7 @@
 
                 <v-flex col-6>
                   <v-text-field
-                    v-model="dirOdonto"
+                    v-model="direccionAtencion"
                     dense
                     filled
                     prepend-inner-icon="mdi-directions"
@@ -214,6 +214,18 @@
               Los cambios se guardaron satisfactoriamente.
             </v-alert>
           </v-flex>
+          <v-flex col-12 align-self-center>
+          <v-alert
+            :value="badAlert"
+            color="red"
+            dark
+            border="top"
+            icon="mdi-warning"
+            transition="scale-transition"
+          >
+           <p> Algo Salió Mal </p>
+          </v-alert>
+          </v-flex>
         </v-layout>
       </v-card>
     </v-overlay>
@@ -231,11 +243,12 @@ export default {
     overlayE: false,
     overlayV: false,
     updatedAlert: false,
+    badAlert: false,
     nameOdonto: "",
     LastnameOdonto: "",
     modal: "",
     gender: "",
-    dirOdonto: "",
+    direccionAtencion: "",
     celOdonto: "",
     mailOdonto: "",
     numReg: "",
@@ -244,7 +257,7 @@ export default {
     numDoc:"",
     descOd:"",
     headers: [
-      { text: "#", filterable: false, align: "center", value: "id" },
+      //{ text: "#", filterable: false, align: "center", value: "id" },
       { text: "Nombre", align: "center", value: "name" },
       { text: "Apellidos", align: "center", value: "lastname" },
       { text: "Telefono/Celular", align: "center", value: "cel" },
@@ -257,7 +270,6 @@ export default {
     ],
   }),
     mounted () {
-    console.log("Montando todo!")
     fetch ("http://localhost:3304/Odontologo")
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
@@ -272,7 +284,7 @@ export default {
             itemTemp.fechaNac = element.fechaNacimiento
             itemTemp.registerP = element.numeroRegistro
             itemTemp.genero = element.genero
-            itemTemp.adress = element.direccionAtencion
+            itemTemp.direccionAtencion = element.direccionAtencion
             itemTemp.cel = element.telefono
             itemTemp.mail = element.email
             itemTemp.description = element.descripcion
@@ -289,7 +301,7 @@ export default {
       this.numDocodonto = user.numDoc;
       this.modal = user.fechaNac;
       this.gender = user.genero;
-      this.dirOdonto = user.adress;
+      this.direccionAtencion = user.direccionAtencion;
       this.celOdonto = user.cel;
       this.mailOdonto = user.mail;
       this.registerOdonto = user.registerP;
@@ -299,7 +311,7 @@ export default {
       this.numReg=user.registerP;
       this.descOd=user.description;
     },
-    saveOdonto() {
+    async saveOdonto() {
       this.odontoList[
         this.odontoList.indexOf(this.selUser)
       ].name = this.nameOdonto;
@@ -308,14 +320,13 @@ export default {
       ].lastname = this.LastnameOdonto;
       this.odontoList[
         this.odontoList.indexOf(this.selUser)
-      ].adress = this.dirOdonto;
+      ].direccionAtencion = this.direccionAtencion;
       this.odontoList[
         this.odontoList.indexOf(this.selUser)
       ].mail = this.mailOdonto;
       this.odontoList[
         this.odontoList.indexOf(this.selUser)
       ].cel = this.celOdonto;
-      
       this.odontoList[
         this.odontoList.indexOf(this.selUser)
       ].fechaNac = this.date;
@@ -334,7 +345,41 @@ export default {
         this.odontoList.indexOf(this.selUser)
       ].description = this.descOd;
 
-      this.updatedAlert = true;
+
+      let data = {
+        nombres: this.selUser.name,
+        apellidos: this.selUser.lastname,
+        direccionAtencion: this.selUser.direccionAtencion,
+        telefono: this.selUser.cel,
+        email: this.selUser.mail,
+        numeroRegistro: this.selUser.registerP,
+        genero: this.selUser.genero,
+        fechaNacimiento: this.selUser.fechaNac,
+        documentoIdentidad: this.selUser.numDoc,
+        idAdministrador: this.selUser.id,
+        descripcion: this.selUser.description,
+        idOdontologo: this.selUser.id
+      }
+      await fetch("http://localhost:3304/Odontologo", {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          if (!response.error) {
+            this.updatedAlert = true;
+          } else {
+            this.badAlert = true;
+          }
+        })
     },
   },
 };

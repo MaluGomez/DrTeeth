@@ -38,10 +38,6 @@
                        </v-flex>
                        <v-flex col-12 pa-0>
                          <v-chip color="#1E88E5" class="ma-3" outlined>
-                           <v-icon left>mdi-phone-classic</v-icon>
-                           Telefono: {{user.tel}}
-                         </v-chip>
-                         <v-chip color="#1E88E5" class="ma-3" outlined>
                            <v-icon left>mdi-cellphone</v-icon>
                            Celular: {{user.phone}}
                          </v-chip>
@@ -117,43 +113,43 @@ export default {
   },
   methods: {
     dateFormat() {
-      let dateMes = this.user.born.split('/')
+      let dateMes = this.user.born.split('-')
       switch (dateMes[1]) {
         case '01':
-          this.user.born = 'Enero-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Enero-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '02':
-          this.user.born = 'Febrero-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Febrero-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '03':
-          this.user.born = 'Marzo-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Marzo-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '04':
-          this.user.born = 'Abril-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Abril-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '05':
-          this.user.born = 'Mayo-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Mayo-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '06':
-          this.user.born = 'Junio-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Junio-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '07':
-          this.user.born = 'Julio-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Julio-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '08':
-          this.user.born = 'Agosto-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Agosto-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '09':
-          this.user.born = 'Septiembre-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Septiembre-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '10':
-          this.user.born = 'Octubre-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Octubre-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '11':
-          this.user.born = 'Noviembre-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Noviembre-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         case '12':
-          this.user.born = 'Diciembre-' + dateMes[0] + '-' + dateMes[2]
+          this.user.born = 'Diciembre-' + dateMes[0] + '-' + dateMes[2][0] + dateMes[2][1]
           break;
         default:
           break;
@@ -162,7 +158,7 @@ export default {
   },
   mounted () {
     this.user = this.$store.state.user
-    this.user.avatar = this.user.name.split(" ")[0][0] + this.user.name.split(" ")[1][0]
+    this.user.avatar = this.user.name.split(" ")[0][0]
     this.dateFormat()
   }
 }

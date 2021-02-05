@@ -104,7 +104,7 @@ export default {
       phone: "",
       selUser: {},
       headers: [
-        { text: "#", filterable: false, align: "center", value: "id" },
+        //{ text: "#", filterable: false, align: "center", value: "id" },
         { text: "Nombre", align: "center", value: "nameA" },
         { text: "Apellidos", align: "center", value: "lastNameA" },
         { text: "Opciones", align: "center", value: "opciones" },
@@ -115,7 +115,6 @@ export default {
   },
 
   mounted () {
-    console.log("Montando todo!")
     fetch ("http://localhost:3304/Administrador")
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
@@ -142,12 +141,36 @@ export default {
       this.phone = user.phoneA;
       this.email = user.emailA;
     },
-    saveAdmin() {
+    async saveAdmin() {
+
       this.adminList[this.adminList.indexOf(this.selUser)].nameA = this.nameAdmin;
-       this.adminList[this.adminList.indexOf(this.selUser)].lastNameA = this.lastNameAdmin;
-        this.adminList[this.adminList.indexOf(this.selUser)].phoneA = this.phone;
-         this.adminList[this.adminList.indexOf(this.selUser)].emailA = this.email;
+      this.adminList[this.adminList.indexOf(this.selUser)].lastNameA = this.lastNameAdmin;
+      this.adminList[this.adminList.indexOf(this.selUser)].phoneA = this.phone;
+      this.adminList[this.adminList.indexOf(this.selUser)].emailA = this.email;
       this.updatedAlert = true;
+      let data = {
+        nombres: this.selUser.nameA,
+        apellidos: this.selUser.lastNameA,
+        email: this.selUser.emailA,
+        telefono: this.selUser.phoneA,
+        idAdministrador: this.selUser.id
+      }
+      await fetch("http://localhost:3304/Administrador", {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          
+        })
     },
   },
 };

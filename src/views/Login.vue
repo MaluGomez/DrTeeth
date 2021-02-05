@@ -53,13 +53,22 @@
               title
               :disabled="!valid"
               @click="Login()"
-              
             >
-              Iniciar Sesión <v-icon>mdi-login</v-icon></v-btn
-            >
-            
+              Iniciar Sesión <v-icon>mdi-login</v-icon></v-btn>
           </v-form>
+          <v-flex col-12 align-self-center>
+          <v-alert
+            :value="alertLogin"
+            color="red"
+            dark
+            border="top"
+            icon="mdi-warning"
+            transition="scale-transition"
+          >
+           <p> Usuario o contraseña incorrecta!!! </p>
+          </v-alert>
           
+        </v-flex>
            
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -104,6 +113,7 @@ export default {
   data() {
     return {
       alert: false,
+      alertLogin: false,
       pass: false,
        show4: false,
       valid: false,
@@ -127,8 +137,7 @@ export default {
           password: this.password,
           user: this.email
         }
-        console.log(data)
-        const response = await fetch("http://localhost:3304/Auth", {
+        await fetch("http://localhost:3304/Auth", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -139,58 +148,70 @@ export default {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
             body: JSON.stringify(data)
-        }).then(res => res.json())
+        }).then( async res => res.json())
             .catch(error => console.error('Error:', error))
-            .then(response => {
-              console.log(response[1])
+            .then(async response => {
               if (response[0]) {
                 if (response[0].rol == "0"){
-                this.$store.state.user.email = this.email                
-                this.$store.state.user.rol = "1"
-                this.$router.push('/').catch(()=>{})  
+                  this.$store.state.user.email = this.email                
+                  this.$store.state.user.rol = response[0].rol
+                  localStorage.setItem('email', this.email)
+                  localStorage.setItem('rol', response[0].rol)
+                  this.$router.push('/').catch(()=>{})  
+                } else {
+                  this.$store.state.user.email = this.email
+                  this.$store.state.user.rol = response[0].rol
+                  this.$store.state.user.name = response[0].nombres
+                  this.$store.state.user.lastname = response[0].apellidos
+                  this.$store.state.user.born = response[0].fechaNacimiento
+                  this.$store.state.user.phone = response[0].telefono
+                  this.$store.state.user.gender = response[0].genero
+                  this.$store.state.user.identify = response[0].documentoIdentidad
+                  this.$store.state.user.address = response[0].direccionAtencion
+                  this.$store.state.user.register = response[0].numeroRegistro
+                  this.$store.state.user.description = response[0].descripcion
+                  this.$store.state.user.idOdontologo = response[0].idOdontologo
+                  localStorage.setItem('email', this.email)
+                  localStorage.setItem('rol', response[0].rol)
+                  localStorage.setItem('name', response[0].nombres)
+                  localStorage.setItem('lastname', response[0].apellidos)
+                  localStorage.setItem('born', response[0].fechaNacimiento)
+                  localStorage.setItem('phone', response[0].telefono)
+                  localStorage.setItem('gender', response[0].genero)
+                  localStorage.setItem('identify', response[0].documentoIdentidad)
+                  localStorage.setItem('address', response[0].direccionAtencion)
+                  localStorage.setItem('register', response[0].numeroRegistro)
+                  localStorage.setItem('description', response[0].descripcion)
+                  localStorage.setItem('idOdontologo', response[0].idOdontologo)
+                  this.$router.push('/').catch(()=>{})
                 }
-                this.$store.state.user.email = this.email
-                this.$store.state.user.rol = "0"  
-                this.$router.push('/').catch(()=>{}
-                )
               } else {
-                console.log(response)
+                this.alertLogin = true
+                setTimeout(() => {
+                  this.alertLogin = false
+                }, 3000);
               }
             });
-        
-        /**
-         * ACA DEBERIA HACER LA CONSULTA A LA BASE DE DATOS O AL BACK PARA VER SI TODO COINCIDE Y PUEDE PASAR.
-         */
-        /*if (this.email == 'malu@ag.com') {
-          this.$store.state.user.email = this.email
-          this.$store.state.user.rol = "1"
-          this.$router.push('/').catch(()=>{})
-          //rol odontologo//
-        } else if (this.email == 'shongo@ag.com') {
-          this.$store.state.user.email = this.email
-          this.$store.state.user.name = "Jhon Edinson"
-          this.$store.state.user.lastname = "Castañeda Oviedo"
-          this.$store.state.user.born = "01/01/1998"
-          this.$store.state.user.phone = "3004256523"
-          this.$store.state.user.tel = "635926"
-          this.$store.state.user.gender = "Masculino"
-          this.$store.state.user.identify = "1025634856"
-          this.$store.state.user.address = "Hotel Campestre Español Condado de Pavas"
-          this.$store.state.user.register = "00000000001"
-          this.$store.state.user.description = "Lorem ipsum dolor sit amet, at aliquam vivendum vel, everti delicatissimi cu eos. Dico iuvaret debitis mel an, et cum zril menandri. Eum in consul legimus accusam. Ea dico abhorreant duo, quo illum minimum incorrupte no, nostro voluptaria sea eu. Suas eligendi ius at, at nemore equidem est. Sed in error hendrerit, in consul constituam cum."
-          this.$store.state.user.rol = "2"
-          this.$router.push('/').catch(()=>{})
-        } else {
-          console.log('No coincide')
-        }*/
       }
-    },
-    
+    }, 
   },
-  mounted () {
-    this.$store.state.user = {}
+  mounted() {
+    if (localStorage.email) {
+      this.$store.state.user.email = localStorage.email
+      this.$store.state.user.rol = localStorage.rol
+      this.$store.state.user.name = localStorage.name
+      this.$store.state.user.lastname = localStorage.lastname
+      this.$store.state.user.born = localStorage.born
+      this.$store.state.user.phone = localStorage.phone
+      this.$store.state.user.gender = localStorage.gender
+      this.$store.state.user.identify = localStorage.identify
+      this.$store.state.user.address = localStorage.address
+      this.$store.state.user.register = localStorage.register
+      this.$store.state.user.description = localStorage.descripcion
+      this.$store.state.user.idOdontologo = localStorage.idOdontologo
+      this.$router.push('/').catch(()=>{})
+    }
   },
-  
 };
 </script>
 <style>

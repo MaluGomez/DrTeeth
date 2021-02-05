@@ -18,34 +18,6 @@
               <v-flex col-12>
                 <v-layout wrap>
                   <v-flex col-12>
-                    <v-text-field
-                      dense
-                      filled
-                      prepend-inner-icon="mdi-account-box-outline"
-                      :rules="[
-                        (val) => (val || '').length > 0 || 'Campo Requerido',
-                      ]"
-                      color="purple darken-2"
-                      label="NombrePaciente*"
-                      v-model="nomPaciente"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex col-12>
-                    <v-select
-                      prepend-inner-icon="mdi-credit-card"
-                      :rules="[
-                        (val) => (val || '').length > 0 || 'Campo Requerido',
-                      ]"
-                      :items="['CC', 'TI']"
-                      filled
-                      label="Tipo Documento*"
-                      v-model="tipoDoc"
-                      dense
-                    ></v-select>
-                  </v-flex>
-
-                  <v-flex col-12>
                     <v-menu
                       ref="menu"
                       v-model="menu"
@@ -83,29 +55,10 @@
                         >
                       </v-date-picker>
                     </v-menu>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <v-flex col-12>
-                <v-layout wrap>
-                  <v-flex col-12>
-                    <v-text-field
-                      dense
-                      filled
-                      prepend-inner-icon="mdi-account-box-outline"
-                      :rules="[
-                        (val) => (val || '').length > 0 || 'Campo Requerido',
-                      ]"
-                      color="purple darken-2"
-                      label="ApellidosPaciente*"
-                      v-model="apellidoPaci"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex col-12>
+                    <v-flex col-12>
                     <v-text-field
                       filled
-                      prepend-inner-icon="mdi-credit-card"
+                      prepend-icon="mdi-credit-card"
                       :rules="[
                         (val) => (val || '').length > 0 || 'Campo Requerido',
                       ]"
@@ -113,9 +66,14 @@
                       label="Número Documento*"
                       v-model="numDoc"
                       required
+                      type="number"
                     ></v-text-field>
                   </v-flex>
-
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex col-12>
+                <v-layout wrap>
                   <v-flex col-12>
                     <v-dialog
                       ref="dialog"
@@ -153,6 +111,7 @@
                       </v-time-picker>
                     </v-dialog>
                   </v-flex>
+                  
                 </v-layout>
                 <v-layout wrap>
                   <v-flex col-12>
@@ -179,6 +138,11 @@
                         La cita se ha agendado satisfactoriamente.
                       </v-alert>
                     </v-flex>
+                    <v-flex col-12>
+                      <v-alert type="error" dense transition="scale-transition" text v-if="alertError">
+                        No se pudo agendar la cita, revise los datos digitados.
+                      </v-alert>
+                    </v-flex>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -199,9 +163,7 @@ export default {
     modal2: false,
     time: null,
     updatedAlert: false,
-    nomPaciente:"",
-    apellidoPaci:"",
-    tipoDoc:"",
+    alertError: false,
     date:"",
     numDoc:"",
     time:""
@@ -209,35 +171,56 @@ export default {
   }),
   methods: {
     async saveCita() {
-      let currentCita = {
-        idCita:0,
-        nombrePaciente:this.nomPaciente,
-        apellidoPaciente: this.apellidoPaci,
-        fecha: this.date, 
-        numDoc:this.numDoc,
-        hora:this.time,
-        idPaciente:1,
-        idOdontologo:3
+      let pacienteTemp = {}
+      await fetch("http://localhost:3304/Paciente/" + this.numDoc, {})
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          if (!response.error && response[0]) {
+            pacienteTemp = response[0]
+          } else {
+            this.alertError= true
+                setTimeout(() => {
+                  this.alertError = false
+                }, 3000);
+            
+          }
+        });
+      if (pacienteTemp.idPaciente) {
+        let currentCita = {
+          nombrePaciente: pacienteTemp.nombres,
+          apellidoPaciente: pacienteTemp.apellidos,
+          fecha: this.date, 
+          numDoc: pacienteTemp.numeroIdentificacion,
+          hora: this.time,
+          idPaciente: pacienteTemp.idPaciente,
+          idOdontologo: this.$store.state.user.idOdontologo
+        };
 
-      };
-      const response = await fetch("http://localhost:3304/Cita", {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(currentCita)
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => {
-              console.log(response)
-            });
-
-      this.updatedAlert = true;
+        await fetch("http://localhost:3304/Cita", {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer',
+          body: JSON.stringify(currentCita)
+        })
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error))
+          .then(response => {
+            
+             this.updatedAlert= true
+                setTimeout(() => {
+                  this.updatedAlert = false
+                }, 3000);
+          });
+      } else {
+        
+      }
     },
   },
 };

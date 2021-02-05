@@ -111,17 +111,17 @@
                                 ]"
                                 row
                                 label="Genero*"
-                                v-model="Genero"
+                                v-model="genero"
                               >
                                 <v-radio
                                   label="F"
                                   color="#F7B1F4"
-                                  value="primary"
+                                  value="F"
                                 ></v-radio>
                                 <v-radio
                                   label="M"
                                   color="primary"
-                                  value="secondary"
+                                  value="M"
                                 ></v-radio>
                               </v-radio-group>
                             </v-flex>
@@ -148,11 +148,10 @@
                               <v-text-field
                                 prepend-inner-icon="mdi-email"
                                 :rules="[
-                                  (val) =>
-                                    (val || '').length > 0 || 'Campo Requerido',
+                                  v => /.+@.+/.test(v) || 'Ingrese un correo valido'
                                 ]"
                                 color="purple darken-2"
-                                label="Correo Electronico*"
+                                label="Correo Electronico"
                                 v-model="email"
                                 required
                               ></v-text-field>
@@ -170,6 +169,7 @@
                                 label="Telefono/Celular*"
                                 v-model="telefono"
                                 required
+                                type="number"
                               ></v-text-field>
                             </v-flex>
                           </v-layout>
@@ -183,7 +183,7 @@
                                 (val) =>
                                   (val || '').length > 0 || 'Campo Requerido',
                               ]"
-                              :items="['CC', 'TI']"
+                              :items="['CC', 'TI/RegistroCivil']"
                               filled
                               label="Tipo Documento*"
                               v-model="tipoDoc"
@@ -202,6 +202,7 @@
                               label="Número Documento*"
                               v-model="numDoc"
                               required
+                              type="number"
                             ></v-text-field>
                           </v-flex>
                         </v-row>
@@ -247,7 +248,7 @@
                         <br />
                         <br />
                         <br />
-                        <v-layout wrap>
+                        <v-layout wrap v-if="tipoDoc == 'TI/RegistroCivil'">
                           <v-flex col-12 pa-0>
                             <h2 style="color: #1E88E5">
                               Información Acudiente
@@ -297,6 +298,7 @@
                                         label="TelefonoAcudiente"
                                         v-model="telAcu"
                                         required
+                                        type="number"
                                       ></v-text-field>
                                     </v-flex>
                                   </v-layout>
@@ -328,59 +330,8 @@
               <v-flex col-12>
                 <v-layout wrap>
                   <v-flex col-12 pa-0>
-                    <h2 style="color: #1E88E5">Información General</h2>
-                    <v-divider color="#1E88E5" />
-                    <br />
                     <v-container fluid>
                       <v-row>
-                        <v-row>
-                          <v-layout wrap>
-                            <v-flex col-12>
-                              <v-text-field
-                                prepend-inner-icon="mdi-account-box-outline"
-                                :rules="[
-                                  (val) =>
-                                    (val || '').length > 0 || 'Campo Requerido',
-                                ]"
-                                color="purple darken-2"
-                                label="Nombre Odontologo*"
-                                v-model="nomOdon"
-                                required
-                              ></v-text-field>
-                            </v-flex>
-                          </v-layout>
-                          <v-layout wrap>
-                            <v-flex col-12>
-                              <v-text-field
-                                prepend-inner-icon="mdi-account-box-outline"
-                                :rules="[
-                                  (val) =>
-                                    (val || '').length > 0 || 'Campo Requerido',
-                                ]"
-                                color="purple darken-2"
-                                label="Apellidos Odontologo*"
-                                v-model="apellidoOdon"
-                                required
-                              ></v-text-field>
-                            </v-flex>
-                          </v-layout>
-                        </v-row>
-                        <v-row>
-                          <v-layout wrap>
-                            <v-flex col-12>
-                              <v-text-field
-                                prepend-inner-icon="mdi-account-box-outline"
-                                color="purple darken-2"
-                                label="Nombre Asistente"
-                                v-model="nomAsistente"
-                                required
-                              ></v-text-field>
-                            </v-flex>
-                          </v-layout>
-
-                          
-                        </v-row>
-
                         <v-flex>
                           <v-layout wrap>
                             <v-flex col-12>
@@ -394,6 +345,7 @@
                                     <v-radio-group
                                       column
                                       label="¿Tratamiento Actual?*"
+                                      v-model="pregunta1"
                                     >
                                       <v-radio
                                         label="Si"
@@ -413,6 +365,7 @@
                                     <v-radio-group
                                       column
                                       label="¿Toma Medicamentos?*"
+                                      v-model="pregunta2"
                                     >
                                       <v-radio
                                         label="Si"
@@ -432,7 +385,7 @@
                               <v-row>
                                 <v-layout wrap>
                                   <v-flex col-12>
-                                    <v-radio-group column label="¿Alergias?*">
+                                    <v-radio-group column label="¿Alergias?*" v-model="pregunta3">
                                       <v-radio
                                         label="Si"
                                         color="primary"
@@ -451,6 +404,7 @@
                                     <v-radio-group
                                       column
                                       label="¿Presión Arterial?*"
+                                      v-model="pregunta4"
                                     >
                                       <v-radio
                                         label="Si"
@@ -470,7 +424,7 @@
                               <v-row>
                                 <v-layout wrap>
                                   <v-flex col-12>
-                                    <v-radio-group column label="¿Cirugías?*">
+                                    <v-radio-group column label="¿Cirugías?*" v-model="pregunta5">
                                       <v-radio
                                         label="Si"
                                         color="primary"
@@ -486,7 +440,7 @@
                                 </v-layout>
                                 <v-layout wrap>
                                   <v-flex col-12>
-                                    <v-radio-group column label="¿Embarazo?*">
+                                    <v-radio-group column label="¿Embarazo?*" v-model="pregunta6">
                                       <v-radio
                                         label="Si"
                                         color="primary"
@@ -510,6 +464,7 @@
                                       color="purple darken-2"
                                       name="input-7-4"
                                       label="Observaciones"
+                                      v-model="observaciones"
                                     ></v-textarea>
                                   </v-col>
                                 </v-layout>
@@ -545,6 +500,11 @@
                         El nuevo paciente se ha guardado satisfactoriamente.
                       </v-alert>
                     </v-flex>
+                    <v-flex col-12>
+                      <v-alert type="error" dense transition="scale-transition" text v-if="alertError">
+                        Revise los datos digitados, todos los campos deben estar llenos.
+                      </v-alert>
+                    </v-flex>
                   </v-flex>
                 </v-layout>
                 </v-layout>
@@ -565,6 +525,7 @@ export default {
     modal: false,
     menu2: false,
     updatedAlert: false,
+    errorAlert: false,
     nombre: "",
     apellido: "",
     tipoDoc:"",
@@ -572,7 +533,7 @@ export default {
     direccion:"",
     email:"",
     numDoc:"",
-    Genero:"",
+    genero:"",
     telefono:"",
     rh:"",
     eps:"",
@@ -584,27 +545,34 @@ export default {
     apellidoOdon:"",
     nomAsistente:"",
     nomAsistente:"",
-    
+    pregunta1: "",
+    pregunta2: "",
+    pregunta3: "",
+    pregunta4: "",
+    pregunta5: "",
+    pregunta6: "",
+    observaciones: ""
   }),
   
 
     methods: {
     async savePa() {
+      let idPaciente = ""
       let currentPatient = {
-        idPaciente: 0,
         nombres: this.nombre,
         apellidos: this.apellido,
         tipoIdentificacion: this.tipoDoc,
         numeroIdentificacion: this.numDoc,
         direccion: this.direccion,
         email: this.email,
-        genero: this.Genero,
+        genero: this.genero,
         telefono: this.telefono,
         rh: this.rh,
         fechaNacimiento: this.date,
-        eps: this.eps
+        eps: this.eps,
+        idOdontologo: this.$store.state.user.idOdontologo
       };
-      const response = await fetch("http://localhost:3304/Paciente", {
+      await fetch("http://localhost:3304/Paciente", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -615,20 +583,48 @@ export default {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
             body: JSON.stringify(currentPatient)
-        }).then(res => res.json())
+        })
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error))
+          .then(async response => {
+            idPaciente = response.insertId
+            let data = {
+              pregunta1: this.pregunta1,
+              pregunta2: this.pregunta2,
+              pregunta3: this.pregunta3,
+              pregunta4: this.pregunta4,
+              pregunta5: this.pregunta5,
+              pregunta6: this.pregunta6,
+              observaciones: this.observaciones,
+              idPaciente: response.insertId
+            }
+            await fetch("http://localhost:3304/Antecedente", {
+              method: 'POST',
+              mode: 'cors',
+              cache: 'no-cache',
+              credentials: 'same-origin',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              redirect: 'follow',
+              referrerPolicy: 'no-referrer',
+              body: JSON.stringify(data)
+            })
+            .then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
-              console.log(response)
+
             });
-      
-      /**let currentPatientAcu = {
-        idAcudiente: 0,
-        nombres: this.nomAcu,
-        apellidos: this.apelliodAcu,
-        telefono: this.telAcu,
-        parentesco: this.parentesco
-      };
-      const response = await fetch("http://localhost:3304/Acudiente", {
+        });
+      if (this.tipoDoc == "TI") {
+        let data = {
+          nombres: this.nomAcu,
+          apellidos: this.apelliodAcu,
+          telefono: this.telAcu,
+          parentesco: this.parentesco,
+          idPaciente: idPaciente
+        }
+        await fetch("http://localhost:3304/Acudiente", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -638,39 +634,14 @@ export default {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body: JSON.stringify(currentPatientAcu)
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => {
-              console.log(response)
-            });
-
-     /** let currentPatientAntece = {
-        idAcudiente: 0,
-        nombres: this.nomAcu,
-        apellidos: this.apelliodAcu,
-        telefono: this.telAcu,
-        parentesco: this.parentesco
-      };
-
-
-      const response = await fetch("http://localhost:3304/Acudiente", {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(currentPatientAcu)
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => {
-              console.log(response)
-            });*/
-
+            body: JSON.stringify(data)
+        })
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error))
+          .then(async response => {
+          })
+      } else {
+      }
       this.updatedAlert = true;
     },
   },

@@ -16,17 +16,14 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="patientsList"
-            :search="search"
-          >
+          <v-data-table :headers="headers" :items="patientsList" :search="search" :loading="loading">
+          
             <template v-slot:item.opciones="{ item }">
               <v-layout wrap>
                 <v-flex class="d-flex justify-center">
                   <v-btn
                 color="primary"
-                @click="(overlayHC = !overlayHC), selectUser(item)"
+                @click="(overlayHC = !overlayHC), selectUser(item), getInfo()"
                 class="mx-2"
               >
                 Ver HC
@@ -35,6 +32,7 @@
                 color="purple"
                 @click="(overlayRT = !overlayRT), selectUser(item)"
                 class="mx-2"
+                v-if="item.idOdontograma"
                 >Tratamiento
               </v-btn>
               <v-btn
@@ -255,7 +253,7 @@
                 ></v-text-field>
               </v-flex>
             </v-row>
-            <v-layout wrap>
+            <v-layout wrap v-if="selUser.tipDoc == 'TI'">
               <v-flex col-12 pa-0>
                 <h2 style="color: #1E88E5">
                   Información Acudiente
@@ -275,6 +273,7 @@
                             color="purple darken-2"
                             label="NombreAcudiente"
                             required
+                            disabled
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
@@ -288,6 +287,7 @@
                             prepend-inner-icon="mdi-account-box-outline"
                             label="ApellidosAcudiente"
                             required
+                            disabled
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
@@ -305,6 +305,7 @@
                             color="purple darken-2"
                             label="TelefonoAcudiente"
                             required
+                            disabled
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
@@ -318,6 +319,7 @@
                             prepend-inner-icon="mdi-account-box-outline"
                             label="Parentesco"
                             required
+                            disabled
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
@@ -338,7 +340,7 @@
                   <v-row>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Tratamiento Actual?*" v-model="pregunta1">
+                        <v-radio-group column label="¿Tratamiento Actual?*" v-model="pregunta1" disabled>
                           <v-radio
                             label="Si"
                             color="primary"
@@ -354,42 +356,7 @@
                     </v-layout>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Toma Medicamentos?*"  v-model="pregunta2">
-                          <v-radio
-                            label="Si"
-                            color="primary"
-                            value="SI"
-                          ></v-radio>
-                          <v-radio
-                            label="No"
-                            color="primary"
-                            value="NO"
-                          ></v-radio>
-                        </v-radio-group>
-                      </v-flex>
-                    </v-layout>
-                  </v-row>
-
-                  <v-row>
-                    <v-layout wrap>
-                      <v-flex col-12>
-                        <v-radio-group column label="¿Alergias?*"  v-model="pregunta3">
-                          <v-radio
-                            label="Si"
-                            color="primary"
-                            value="SI"
-                          ></v-radio>
-                          <v-radio
-                            label="No"
-                            color="primary"
-                            value="NO"
-                          ></v-radio>
-                        </v-radio-group>
-                      </v-flex>
-                    </v-layout>
-                    <v-layout wrap>
-                      <v-flex col-12>
-                        <v-radio-group column label="¿Presión Arterial?*"  v-model="pregunta4">
+                        <v-radio-group column label="¿Toma Medicamentos?*"  v-model="pregunta2" disabled>
                           <v-radio
                             label="Si"
                             color="primary"
@@ -408,7 +375,7 @@
                   <v-row>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Cirugías?*"  v-model="pregunta5">
+                        <v-radio-group column label="¿Alergias?*"  v-model="pregunta3" disabled>
                           <v-radio
                             label="Si"
                             color="primary"
@@ -424,7 +391,42 @@
                     </v-layout>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Embarazo?*"  v-model="pregunta6">
+                        <v-radio-group column label="¿Presión Arterial?*"  v-model="pregunta4" disabled>
+                          <v-radio
+                            label="Si"
+                            color="primary"
+                            value="SI"
+                          ></v-radio>
+                          <v-radio
+                            label="No"
+                            color="primary"
+                            value="NO"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-flex>
+                    </v-layout>
+                  </v-row>
+
+                  <v-row>
+                    <v-layout wrap>
+                      <v-flex col-12>
+                        <v-radio-group column label="¿Cirugías?*"  v-model="pregunta5" disabled>
+                          <v-radio
+                            label="Si"
+                            color="primary"
+                            value="SI"
+                          ></v-radio>
+                          <v-radio
+                            label="No"
+                            color="primary"
+                            value="NO"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout wrap>
+                      <v-flex col-12>
+                        <v-radio-group column label="¿Embarazo?*"  v-model="pregunta6" disabled>
                           <v-radio
                             label="Si"
                             color="primary"
@@ -449,6 +451,7 @@
                           color="purple darken-2"
                           name="input-7-4"
                           label="Observaciones"
+                          disabled
                         ></v-textarea>
                       </v-col>
                     </v-layout>
@@ -485,21 +488,23 @@
 
     <!-- Fin del codigo que se ejecuta para Historia Clinica -->
     <!-- Este pedaso de codsigo se ejecuta cuando le da click en el boton Realizar Tratamiento -->
-    <v-overlay :value="overlayRT" absolute>
-      <v-card light style="width: 100%">
+    <v-overlay :value="overlayRT" absolute class="d-flex justify-start absolute" style="width: 160%; height: 130%">
+      <v-card light style="margin-left: 100px; margin-top: 120px">
         <v-layout wrap>
           <v-flex col-12>
             <v-textarea
               v-model="motivoConsulta"
               name="input-7-1"
-              label="Motivo de Consulta"
               counter=""
             ></v-textarea>
-            <v-textarea
-              v-model="odontogramaAnt"
-              label="Odontograma de Paciente"
-              disabled
-            ></v-textarea>
+            <Odontrograma
+            :dienteSupProp="selUser.dienteSup"
+            :dienteInfProp="selUser.dienteInf"
+            :dientesLecheSupProp="selUser.dientesLecheSup"
+            :dientesLecheInfProp="selUser.dientesLecheInf"
+            :odt="true"
+            @updateOdontograma="updateOdontograma"
+            />
             <v-textarea
               v-model="observaciones"
               label="Observaciones"
@@ -532,263 +537,12 @@
     <!-- inicio codigo para consulta nueva-->
     <v-overlay :value="overlayC" absolute class="d-flex justify-start absolute" style="width: 160%; height: 130%">
       <v-card light style="margin-left: 100px; margin-top: 120px">
+        <Odontrograma :odt="false" @updateOdontograma="updateOdontograma"/>
         <v-layout wrap>
-          <v-flex col-12 class="pa-0">
-            <v-flex class="text-center" col-12>
-              <v-btn class="mx-2 red" @click="selColor = 'red'">CARIE</v-btn>
-              <v-btn class="mx-2 yellow" @click="selColor = 'yellow'"
-                >OBTURACIÓN</v-btn
-              >
-              <v-btn class="mx-2 green" @click="selColor = 'green'"
-                >EXTRACCIÓN</v-btn
-              >
-              <v-btn class="mx-2 orange" @click="selColor = 'orange'"
-                >PROTESIS</v-btn
-              >
-              <!--{{selColor}}-->
-            </v-flex>
-            <v-layout>
-              <v-flex
-                class="text-center"
-                v-for="nd in dienteSup"
-                :key="nd.d"
-                flex
-              >
-                <v-layout wrap>
-                  <v-flex col-12 class="pa-0 ma-0 flex">
-                    <h5>{{ nd.d }}</h5>
-                  </v-flex>
-                  <v-flex class="pa-0 ma-0 flex" >
-                    <v-icon
-                      style="margin-bottom: -8px"
-                      :id="nd.d + '_t'"
-                      @click="changeColor(nd.d + '_t')"
-                      :color="nd.sup"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_l'"
-                      @click="changeColor(nd.d + '_l')"
-                      class="mdi-rotate-270"
-                      :color="nd.izq"
-                      >mdi-cloud</v-icon
-                    >
-                    <v-icon
-                      :id="nd.d + '_m'"
-                      @click="changeColor(nd.d + '_m')"
-                      :color="nd.med"
-                      >mdi-checkbox-blank</v-icon
-                    >
-                    <v-icon
-                    style="margin: -5px"
-                      :id="nd.d + '_r'"
-                      @click="changeColor(nd.d + '_r')"
-                      class="mdi-rotate-90"
-                      :color="nd.der"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin-top: -10px"
-                      :id="nd.d + '_b'"
-                      @click="changeColor(nd.d + '_b')"
-                      class="mdi-rotate-180"
-                      :color="nd.inf"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                </v-layout>
-                <!--
-          <v-layout>
-            <v-flex offset-xs12 class="top: -100%">
-              <v-divider v-if="index == 7" vertical></v-divider>
-            </v-flex>
-          </v-layout> 
-          -->
-              </v-flex>
-            </v-layout>
-
-            <v-layout>
-              <v-flex
-                class="text-center"
-                v-for="nd in dientesLecheSup"
-                :key="nd.d"
-              >
-                <v-layout wrap>
-                  <v-flex col-12 class="pa-0 ma-0 flex">
-                    <h5>{{ nd.d }}</h5>
-                  </v-flex>
-                  <v-flex class="pa-0 ma-0 flex">
-                    <v-icon
-                      style="margin-bottom: -8px"
-                      :id="nd.d + '_t'"
-                      @click="changeColor(nd.d + '_t')"
-                      :color="nd.sup"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_l'"
-                      @click="changeColor(nd.d + '_l')"
-                      class="mdi-rotate-270"
-                      :color="nd.izq"
-                      >mdi-cloud</v-icon
-                    >
-                    <v-icon
-                      :id="nd.d + '_m'"
-                      @click="changeColor(nd.d + '_m')"
-                      :color="nd.med"
-                      >mdi-checkbox-blank</v-icon
-                    >
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_r'"
-                      @click="changeColor(nd.d + '_r')"
-                      class="mdi-rotate-90"
-                      :color="nd.der"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                    style="margin-top: -10px"
-                      :id="nd.d + '_b'"
-                      @click="changeColor(nd.d + '_b')"
-                      class="mdi-rotate-180"
-                      :color="nd.inf"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-
-            <v-layout wrap style="width: 100%">
-              <v-flex col-12>
-                <v-divider></v-divider>
-              </v-flex>
-            </v-layout>
-
-            <v-layout>
-              <v-flex
-                class="text-center"
-                v-for="nd in dientesLecheInf"
-                :key="nd.d"
-              >
-                <v-layout wrap>
-                  <v-flex col-12 class="pa-0 ma-0 flex">
-                    <h5>{{ nd.d }}</h5>
-                  </v-flex>
-                  <v-flex class="pa-0 ma-0 flex">
-                    <v-icon
-                      style="margin-bottom: -8px"
-                      :id="nd.d + '_t'"
-                      @click="changeColor(nd.d + '_t')"
-                      :color="nd.sup"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_l'"
-                      @click="changeColor(nd.d + '_l')"
-                      class="mdi-rotate-270"
-                      :color="nd.izq"
-                      >mdi-cloud</v-icon
-                    >
-                    <v-icon
-                      :id="nd.d + '_m'"
-                      @click="changeColor(nd.d + '_m')"
-                      :color="nd.med"
-                      >mdi-checkbox-blank</v-icon
-                    >
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_r'"
-                      @click="changeColor(nd.d + '_r')"
-                      class="mdi-rotate-90"
-                      :color="nd.der"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin-top: -10px"
-                      :id="nd.d + '_b'"
-                      @click="changeColor(nd.d + '_b')"
-                      class="mdi-rotate-180"
-                      :color="nd.inf"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-
-            <v-layout>
-              <v-flex class="text-center" v-for="nd in dienteInf" :key="nd.d">
-                <v-layout wrap>
-                  <v-flex col-12 class="pa-0 ma-0 flex">
-                    <h5>{{ nd.d }}</h5>
-                  </v-flex>
-                  <v-flex class="pa-0 ma-0 flex">
-                    <v-icon
-                      style="margin-bottom: -8px"
-                      :id="nd.d + '_t'"
-                      @click="changeColor(nd.d + '_t')"
-                      :color="nd.sup"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_l'"
-                      @click="changeColor(nd.d + '_l')"
-                      class="mdi-rotate-270"
-                      :color="nd.izq"
-                      >mdi-cloud</v-icon
-                    >
-                    <v-icon
-                      :id="nd.d + '_m'"
-                      @click="changeColor(nd.d + '_m')"
-                      :color="nd.med"
-                      >mdi-checkbox-blank</v-icon
-                    >
-                    <v-icon
-                      style="margin: -5px"
-                      :id="nd.d + '_r'"
-                      @click="changeColor(nd.d + '_r')"
-                      class="mdi-rotate-90"
-                      :color="nd.der"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                  <v-flex col-12 class="pa-0 ma-0">
-                    <v-icon
-                      style="margin-top: -10px"
-                      :id="nd.d + '_b'"
-                      @click="changeColor(nd.d + '_b')"
-                      class="mdi-rotate-180"
-                      :color="nd.inf"
-                      >mdi-cloud</v-icon
-                    >
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-
-            <br /><br />
+          <v-flex>
             <v-col cols="12">
               <v-textarea
-                v-model="diagnostic"
+                v-model="diagnostico"
                 label="DIAGNOSTICO DEL PACIENTE"
                 outlined
                 prepend-inner-icon="mdi-comment"
@@ -814,7 +568,6 @@
               ></v-textarea>
             </v-col>
           </v-flex>
-
           <v-flex col-12>
             <v-btn @click="saveC()" class="mx-2 success">Guardar</v-btn>
             <v-btn
@@ -842,12 +595,11 @@
   </div>
 </template>
 <script>
+import Odontrograma from '../components/Odontrograma'
 export default {
-  props: ["odontograma"],
-
+  components: { Odontrograma },
   data: () => ({
     date: new Date().toISOString().substr(0, 10),
-
       search: "",
       overlayHC: false,
       overlayC: false,
@@ -855,7 +607,7 @@ export default {
       overlayRT: false,
       motivoConsulta: "",
       odontogramaAnt: "",
-      diagnostic: "",
+      diagnostico: "",
       plantratamiento: "",
       observaciones: "",
       nombrePaciente: "",
@@ -883,467 +635,23 @@ export default {
       observacionesAnte:"",
       selUser: {},
       headers: [
-        { text: "#", filterable: false, align: "center", value: "id" },
+        //{ text: "#", filterable: false, align: "center", value: "id" },
         { text: "Nombre", align: "center", value: "name" },
         { text: "Apellidos", align: "center", value: "lastname" },
         { text: "Dirección", align: "center", value: "address" },
-        { text: "CC", align: "center", value: "cc" },
+        { text: "Documento", align: "center", value: "cc" },
         { text: "Opciones", align: "center", value: "opciones" },
       ],
-
+      patientsList: [],
       selColor: "vacio",
-      dientesLecheSup: [
-        // Estos son los superiores Izquierdos //
-        {
-          d: "55",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "54",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "53",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "52",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "51",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        // Estos son los superiores Derecho //
-        {
-          d: "61",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "62",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "63",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "64",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "65",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-      ],
-      dientesLecheInf: [
-        // Estos son los inferiores Izqauierdos //
-        {
-          d: "85",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "84",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "83",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "82",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "81",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        // Estos son los inferiores Derechos //
-        {
-          d: "71",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "72",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "73",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "74",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "75",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-      ],
-      dienteSup: [
-        // Estos son los superiores Izquierdos //
-        {
-          d: "18",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "17",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "16",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "15",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "14",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "13",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "12",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "11",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        // Estos son los superiores Derechos //
-        {
-          d: "21",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "22",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "23",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "24",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "25",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "26",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "27",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "28",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-      ],
-      dienteInf: [
-        // Estos son los inferiores Izqauierdos //
-        {
-          d: "48",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "47",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "46",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "45",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "44",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "43",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "42",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "41",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        // Estos son los inferiores Derechos //
-        {
-          d: "31",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "32",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "33",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "34",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "35",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "36",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "37",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-        {
-          d: "38",
-          sup: "grey",
-          inf: "grey",
-          izq: "grey",
-          der: "grey",
-          med: "grey",
-        },
-      ],
-      colorPrimerBoton: "red",
-      colorSegundoBoton: "yellow",
-      colorTercerBoton: "green",
-      colorCuartoBoton: "orange",
-      alertColor: false,
-
-      patientsList: [
-       
-      ],
+      loading: false
+      
     }),  
 
   methods: {
     selectUser(user) {
       this.selUser = user;
-      this.odontogramaAnt = user.tratamiento.odt;
-      this.motivoConsulta = user.tratamiento.mt;
-      this.observaciones = user.tratamiento.obs;
-      this.nuevoodt = user.consulta.odt1;
-      this.diagnostic = user.consulta.diagnostico;
-      this.plantratamiento = user.consulta.plantrat;
+      this.plantratamiento = user.plantrat;
       this.nombrePaciente = user.name;
       this.apellidosPaciente = user.lastname;
       this.dirPaciente = user.address;
@@ -1351,615 +659,183 @@ export default {
       this.telPaciente = user.phone;
       this.epsPaciente = user.eps;
       this.numDocPaciente = user.cc;
-      this.nombreAcudiente = user.nameAcudient;
-      this.apellidosAcudiente = user.lastNameAcudient;
-      this.telAcudiente = user.telAcudient;
-      this.parentescoAcudiente = user.parentAcudient;
       this.tipoDocPaciente = user.tipDoc;
       this.rhPaciente = user.rhP;
       this.generoPaciente = user.gender;
       this.fechaNacimiento = user.hb;
-      this.pregunta1 = user.question1;
-      this.pregunta2 = user.question2;
-      this.pregunta3 = user.question3;
-      this.pregunta4 = user.question4;
-      this.pregunta5 = user.question5;
-      this.pregunta6 = user.question6;      
-      this.observacionesAnte = user.observacionesA;
-       
+      this.motivoConsulta = user.plantratamiento
+      this.observaciones = user.diagnostico
     },
-    saveTR() {
-      let currentTr = {
-        mt: this.motivoConsulta,
-        odt: this.selUser.tratamiento.odt,
-        obs: this.observaciones,
-         
-      };
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].tratamiento = currentTr;
-      this.updatedAlert = true;
-    },
-
-    saveC() {
-      let currentC = {
-        odt1: this.nuevoodt,
-        diagnostico: this.diagnostic,
-        plantratamiento: this.plantrat,
-      };
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].consulta = currentC;
-      this.updatedAlert = true;
-    },
-    saveHC() {
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].name = this.nombrePaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].lastname = this.apellidosPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].address = this.dirPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].email = this.correoPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].phone = this.telPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].eps = this.epsPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].cc = this.numDocPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].nameAcudient = this.nombreAcudiente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].lastNameAcudient = this.apellidosAcudiente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].telAcudient = this.telAcudiente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].parentAcudient = this.parentescoAcudiente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].rhP = this.rhPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].gender = this.generoPaciente;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].hb = this.fechaNacimiento;
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].tipDoc = this.tipoDocPaciente;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].question1 = this.pregunta1;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].question2 = this.pregunta2;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].question3 = this.pregunta3;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].question4 = this.pregunta4;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].question5 = this.pregunta5;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].question6 = this.pregunta6;      
-      this.patientsList[
-        this.patientsList.indexOf(this.selUser)
-      ].observacionesA = this.observacionesAnte;
-
-
-      this.updatedAlert = true;
-    },
-
-    changeColor(id) {
-      console.log(document.getElementById(id).style.color);
-      if (this.selColor == this.colorPrimerBoton) {
-        if (document.getElementById(id).style.color != this.colorTercerBoton) {
-          document.getElementById(id).style.color = this.colorPrimerBoton;
-          if (
-            this.dientesLecheSup.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dientesLecheSup.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorPrimerBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dientesLecheSup = tempArray;
-          } else if (
-            this.dientesLecheInf.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dientesLecheInf.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorPrimerBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dientesLecheInf = tempArray;
-          } else if (
-            this.dienteSup.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dienteSup.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorPrimerBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dienteSup = tempArray;
-          } else {
-            let tempArray = [];
-            this.dienteInf.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorPrimerBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorPrimerBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dienteInf = tempArray;
-          }
-        }
-      } else if (this.selColor == this.colorSegundoBoton) {
-        if (document.getElementById(id).style.color != this.colorTercerBoton) {
-          document.getElementById(id).style.color = this.colorSegundoBoton;
-          if (
-            this.dientesLecheSup.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dientesLecheSup.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorSegundoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dientesLecheSup = tempArray;
-          } else if (
-            this.dientesLecheInf.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dientesLecheInf.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorSegundoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dientesLecheInf = tempArray;
-          } else if (
-            this.dienteSup.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dienteSup.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorSegundoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dienteSup = tempArray;
-          } else {
-            let tempArray = [];
-            this.dienteInf.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorSegundoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorSegundoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dienteInf = tempArray;
-          }
-        }
-      } else if (this.selColor == this.colorCuartoBoton) {
-        if (document.getElementById(id).style.color != this.colorTercerBoton) {
-          document.getElementById(id).style.color = this.colorCuartoBoton;
-          if (
-            this.dientesLecheSup.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dientesLecheSup.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorCuartoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dientesLecheSup = tempArray;
-          } else if (
-            this.dientesLecheInf.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dientesLecheInf.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorCuartoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dientesLecheInf = tempArray;
-          } else if (
-            this.dienteSup.find(
-              (elemento) => elemento.d == id.substring(0, id.length - 2)
-            )
-          ) {
-            let tempArray = [];
-            this.dienteSup.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorCuartoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dienteSup = tempArray;
-          } else {
-            let tempArray = [];
-            this.dienteInf.forEach((item) => {
-              id.charAt(id.length - 1) == "t" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.sup = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "b" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.inf = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "l" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.izq = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "r" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.der = this.colorCuartoBoton)
-                : "";
-              id.charAt(id.length - 1) == "m" &&
-              item.d == id.substring(0, id.length - 2)
-                ? (item.med = this.colorCuartoBoton)
-                : "";
-              tempArray.push(item);
-            });
-            this.dienteInf = tempArray;
-          }
-        }
-      } else if (this.selColor == this.colorTercerBoton) {
-        document.getElementById(
-          id.substring(0, id.length - 1) + "t"
-        ).style.color = this.colorTercerBoton;
-        document.getElementById(
-          id.substring(0, id.length - 1) + "l"
-        ).style.color = this.colorTercerBoton;
-        document.getElementById(
-          id.substring(0, id.length - 1) + "r"
-        ).style.color = this.colorTercerBoton;
-        document.getElementById(
-          id.substring(0, id.length - 1) + "m"
-        ).style.color = this.colorTercerBoton;
-        document.getElementById(
-          id.substring(0, id.length - 1) + "b"
-        ).style.color = this.colorTercerBoton;
-        if (
-          this.dientesLecheSup.find(
-            (elemento) => elemento.d == id.substring(0, id.length - 2)
-          )
-        ) {
-          let tempArray = [];
-          this.dientesLecheSup.forEach((item) => {
-            item.d == id.substring(0, id.length - 2)
-              ? (item.sup = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.inf = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.izq = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.der = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.med = this.colorTercerBoton)
-              : "";
-            tempArray.push(item);
-          });
-          this.dientesLecheSup = tempArray;
-        } else if (
-          this.dientesLecheInf.find(
-            (elemento) => elemento.d == id.substring(0, id.length - 2)
-          )
-        ) {
-          let tempArray = [];
-          this.dientesLecheInf.forEach((item) => {
-            item.d == id.substring(0, id.length - 2)
-              ? (item.sup = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.inf = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.izq = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.der = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.med = this.colorTercerBoton)
-              : "";
-            tempArray.push(item);
-          });
-          this.dientesLecheInf = tempArray;
-        } else if (
-          this.dienteSup.find(
-            (elemento) => elemento.d == id.substring(0, id.length - 2)
-          )
-        ) {
-          let tempArray = [];
-          this.dienteSup.forEach((item) => {
-            item.d == id.substring(0, id.length - 2)
-              ? (item.sup = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.inf = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.izq = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.der = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.med = this.colorTercerBoton)
-              : "";
-            tempArray.push(item);
-          });
-          this.dienteSup = tempArray;
-        } else {
-          let tempArray = [];
-          this.dienteInf.forEach((item) => {
-            item.d == id.substring(0, id.length - 2)
-              ? (item.sup = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.inf = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.izq = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.der = this.colorTercerBoton)
-              : "";
-            item.d == id.substring(0, id.length - 2)
-              ? (item.med = this.colorTercerBoton)
-              : "";
-            tempArray.push(item);
-          });
-          this.dienteInf = tempArray;
-        }
-      } else {
-        this.alertColor = true;
+    async saveTR() {
+      let data = {
+        idOdontograma: this.selUser.idOdontograma,
+        dienteSup: this.selUser.dienteSup,
+        dienteInf: this.selUser.dienteInf,
+        dientesLecheSup: this.selUser.dientesLecheSup,
+        dientesLecheInf: this.selUser.dientesLecheInf,
+        diagnostico: this.observaciones,
+        planTratamiento: this.motivoConsulta
       }
-      /*
-      console.log(this.dienteSup)
-      console.log(this.dienteInf)
-      console.log(this.dientesLecheSup)
-      console.log(this.dientesLecheInf)
-      */
+      await fetch("http://localhost:3304/Odontograma", {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteSup = this.selUser.dienteSup
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteInf = this.selUser.dienteInf
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheSup = this.selUser.dientesLecheSup
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheInf = this.selUser.dientesLecheInf
+          this.patientsList[this.patientsList.indexOf(this.selUser)].diagnostico = this.observaciones
+          this.patientsList[this.patientsList.indexOf(this.selUser)].plantratamiento = this.motivoConsulta
+          this.updatedAlert = true
+        })
+    },
+    updateOdontograma(dienteSup, dienteInf, dientesLecheSup, dientesLecheInf) {
+      this.selUser.dienteSup = dienteSup
+      this.selUser.dienteInf = dienteInf
+      this.selUser.dientesLecheSup = dientesLecheSup
+      this.selUser.dientesLecheInf = dientesLecheInf
+    },
+    async saveC() {
+      let data = {
+        dienteSup: this.selUser.dienteSup,
+        dienteInf: this.selUser.dienteInf,
+        dientesLecheSup: this.selUser.dientesLecheSup,
+        dientesLecheInf: this.selUser.dientesLecheInf,
+        diagnostico: this.diagnostico,
+        planTratamiento: this.plantratamiento,
+        idPaciente: this.selUser.id
+      }
+      await fetch("http://localhost:3304/Odontograma", {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(async response => {
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteSup = this.selUser.dienteSup;
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteInf = this.selUser.dienteInf;
+          this.patientsList[ this.patientsList.indexOf(this.selUser)].dientesLecheSup = this.selUser.dientesLecheSup;
+          this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheInf = this.selUser.dientesLecheInf;
+          this.patientsList[this.patientsList.indexOf(this.selUser)].diagnostico = this.diagnostico
+          this.patientsList[this.patientsList.indexOf(this.selUser)].plantratamiento = this.plantratamiento
+          await fetch ("http://localhost:3304/Odontograma/" + this.selUser.id)
+              .then(res => res.json())
+              .catch(error => console.error('Error:', error))
+              .then(response => {
+                if (response.length > 0) {
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].idOdontograma = response[0].idOdontograma
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].dienteSup = response[0].dienteSup
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].dienteInf = response[0].dienteInf
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheSup = response[0].dienteLecheSup
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheInf = response[0].dienteLecheInf
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].diagnostico = response[0].diagnostico
+                  this.patientsList[this.patientsList.indexOf(this.selUser)].plantratamiento = response[0].planTratamiento
+                }
+              })
+        })
+      this.updatedAlert = true;
+    },
+    async saveHC() {
+      this.patientsList[this.patientsList.indexOf(this.selUser)].name = this.nombrePaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].lastname = this.apellidosPaciente;
+      this.patientsList[ this.patientsList.indexOf(this.selUser)].address = this.dirPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].email = this.correoPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser) ].phone = this.telPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].eps = this.epsPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].cc = this.numDocPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].rhP = this.rhPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].gender = this.generoPaciente;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].hb = this.fechaNacimiento;
+      this.patientsList[this.patientsList.indexOf(this.selUser)].tipDoc = this.tipoDocPaciente;
+
+      let data = {
+        nombres: this.nombrePaciente,
+        apellidos: this.apellidosPaciente,
+        numeroIdentificacion: this.numDocPaciente,
+        tipoIdentificacion: this.tipoDocPaciente,
+        fechaNacimiento: this.fechaNacimiento,
+        direccion: this.dirPaciente,
+        genero: this.generoPaciente,
+        rh: this.rhPaciente,
+        telefono: this.telPaciente,
+        email: this.email,
+        eps: this.epsPaciente,
+        idPaciente: this.selUser.id
+      }
+
+      await fetch("http://localhost:3304/Paciente", {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          if (!response.error) {
+            this.updatedAlert = true;
+          } else {
+          }
+        })
+    },
+
+    async getInfo() {
+      if (this.selUser.tipDoc == 'TI') {
+        await fetch("http://localhost:3304/Acudiente/" + this.selUser.id,{})
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error))
+          .then(async response => {
+            this.nombreAcudiente = response[0].nombres
+            this.apellidosAcudiente = response[0].apellidos
+            this.telAcudiente = response[0].telefono
+            this.parentescoAcudiente = response[0].parentesco
+        })
+      }
+      await fetch("http://localhost:3304/Antecedente/" + this.selUser.id,{})
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          this.pregunta1 = response[0].pregunta1
+          this.pregunta2 = response[0].pregunta2
+          this.pregunta3 = response[0].pregunta3
+          this.pregunta4 = response[0].pregunta4
+          this.pregunta5 = response[0].pregunta5
+          this.pregunta6 = response[0].pregunta6
+          this.observacionesAnte = response[0].observacion
+      })
     },
   },
-  mounted() {
-    console.log("Montando todo!")
-    fetch ("http://localhost:3304/Paciente")
+  async mounted() {
+    this.loading = true
+    await fetch ("http://localhost:3304/Paciente/Odontologo/" + this.$store.state.user.idOdontologo)
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
-        .then(response => {
-          response.forEach(element => {
+        .then(async response => {
+          response.forEach(async element => {
             let itemTemp = {}
             itemTemp.id = element.idPaciente
             itemTemp.name = element.nombres
@@ -1973,18 +849,25 @@ export default {
             itemTemp.phone = element.telefono
             itemTemp.email = element.email
             itemTemp.eps = element.eps
+            await fetch ("http://localhost:3304/Odontograma/" + element.idPaciente)
+              .then(res => res.json())
+              .catch(error => console.error('Error:', error))
+              .then(response => {
+                if (response.length > 0) {
+                  itemTemp.idOdontograma = response[0].idOdontograma
+                  itemTemp.dienteSup = response[0].dienteSup
+                  itemTemp.dienteInf = response[0].dienteInf
+                  itemTemp.dientesLecheSup = response[0].dienteLecheSup
+                  itemTemp.dientesLecheInf = response[0].dienteLecheInf
+                  itemTemp.diagnostico = response[0].diagnostico
+                  itemTemp.plantratamiento = response[0].planTratamiento
+                }
+              })
             this.patientsList.push(itemTemp)
           });
         });
-    if (this.odontograma) {
-      {
-        this.dientesLecheSup = this.odontograma.dientesLecheSup;
-        this.dientesLecheInf = this.odontograma.dientesLecheInf;
-        this.dienteSup = this.odontograma.dienteSup;
-        this.dienteInf = this.odontograma.dienteInf;
-      }
-    }
-  },
+    this.loading = false
+  }, 
 };
 </script>
 <style>
