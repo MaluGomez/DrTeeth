@@ -6,6 +6,7 @@
         <v-divider></v-divider>
       </v-flex>
       <v-flex col-12>
+        <v-form v-model="valid">
         <v-card elevation="24">
           <v-layout wrap>
             <v-flex col-12>
@@ -14,6 +15,7 @@
             </v-flex>
           </v-layout>
           <v-flex col-6>
+            
             <v-layout ma-2 white>
               <v-flex col-12>
                 <v-layout wrap>
@@ -216,6 +218,7 @@
                 </v-layout>
               </v-flex>
             </v-layout>
+            
           </v-flex>
           <v-layout wrap>
             <v-flex col-12>
@@ -232,6 +235,7 @@
                 label="Descripción Corta del Odontologo*"
                 v-model="descripcion"
               ></v-textarea>
+              
             </v-flex>
           </v-layout>
           <v-layout wrap>
@@ -241,6 +245,7 @@
                   color="blue-grey"
                   class="mx-2 success"
                   @click="saveOdonto()"
+                  :disabled="!valid"
                 >
                   Agregar
                   <v-icon right dark>mdi-account-plus</v-icon>
@@ -260,15 +265,14 @@
               </v-flex>
               <v-flex col-12>
                       <v-alert type="error" dense transition="scale-transition" text v-if="alertError">
-                        Revise los datos digitados, todos los campos deben estar llenos.
+                        Revise los datos digitados. 
                       </v-alert>
                     </v-flex>
-
-
-
+                  
             </v-flex>
           </v-layout>
         </v-card>
+        </v-form>
       </v-flex>
     </v-layout>
   </div>
@@ -301,6 +305,7 @@ export default {
     nombreUsu:"",
     numRegistro:"",
     descripcion:"",
+    valid: false,
     rules: {
         password: value => {
           const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -314,7 +319,8 @@ export default {
   
   methods: {
     async saveOdonto() {
-      let currentOdonto = {
+      if(this.valid){
+        let currentOdonto = {
         idOdontologo: 0,
         nombres: this.nombre,
         apellidos: this.apellido,
@@ -343,9 +349,18 @@ export default {
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
+              console.log(response)
+              this.alertError = true;
+              setTimeout(() => {
+                this.alertError = false;
+              }, 3000);
             });
 
-      this.updatedAlert = true;
+       this.updatedAlert = true;
+        setTimeout(() => {
+          this.updatedAlert = false;
+        }, 3000);
+    }
     },
   },
 };

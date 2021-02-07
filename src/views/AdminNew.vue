@@ -14,6 +14,7 @@
             </v-flex>
           </v-layout>
           <v-flex col-6>
+            <v-form v-model="valid">
             <v-layout ma-2 white>
               <v-flex col-12>
                 <v-layout wrap>
@@ -106,6 +107,7 @@
                         color="blue-grey"
                         class="mx-2 success"
                         @click="saveAdmin()"
+                        :disabled="!valid"
                       >
                         Agregar
                         <v-icon right dark>mdi-account-plus</v-icon>
@@ -132,6 +134,7 @@
                 </v-layout>
               </v-flex>
             </v-layout>
+            </v-form>
           </v-flex>
         </v-card>
       </v-flex>
@@ -159,6 +162,7 @@ export default {
     email: "",
     telefono: "",
     nombreUse: "",
+    valid: false,
     rules: {
         password: value => {
           const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -172,7 +176,8 @@ export default {
   }),
   methods: {
     async saveAdmin() {
-      let currentTr = {
+    if(this.valid){
+        let currentTr = {
         idAdministrador: 0,
         nombres: this.nombre,
         apellidos: this.apellido,
@@ -197,6 +202,10 @@ export default {
               
             });
       this.updatedAlert = true;
+              setTimeout(() => {
+                this.updatedAlert = false;
+              }, 3000);
+    }
     },
   },
 };

@@ -16,31 +16,38 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <v-data-table :headers="headers" :items="patientsList" :search="search" :loading="loading">
-          
+          <v-data-table
+            :headers="headers"
+            :items="patientsList"
+            :search="search"
+            :loading="loading"
+          >
             <template v-slot:item.opciones="{ item }">
               <v-layout wrap>
                 <v-flex class="d-flex justify-center">
                   <v-btn
-                color="primary"
-                @click="(overlayHC = !overlayHC), selectUser(item), getInfo()"
-                class="mx-2"
-              >
-                Ver HC
-              </v-btn>
-              <v-btn
-                color="purple"
-                @click="(overlayRT = !overlayRT), selectUser(item)"
-                class="mx-2"
-                v-if="item.idOdontograma"
-                >Tratamiento
-              </v-btn>
-              <v-btn
-                color="pink"
-                class="mx-2"
-                @click="(overlayC = !overlayC), selectUser(item)"
-                >Consulta
-              </v-btn>
+                    color="primary"
+                    @click="
+                      (overlayHC = !overlayHC), selectUser(item), getInfo()
+                    "
+                    class="mx-2"
+                  >
+                    Ver HC
+                  </v-btn>
+                  <v-btn
+                    color="purple"
+                    @click="(overlayRT = !overlayRT), selectUser(item)"
+                    class="mx-2"
+                    v-if="item.idOdontograma"
+                    >Tratamiento
+                  </v-btn>
+                  <v-btn
+                    color="pink"
+                    class="mx-2"
+                    @click="(overlayC = !overlayC), selectUser(item)"
+                    v-if="!item.idOdontograma"
+                    >Consulta
+                  </v-btn>
                 </v-flex>
               </v-layout>
             </template>
@@ -204,23 +211,15 @@
               <v-layout wrap>
                 <v-flex col-12>
                   <v-radio-group
-                  v-model="generoPaciente"
+                    v-model="generoPaciente"
                     :rules="[
                       (val) => (val || '').length > 0 || 'Campo Requerido',
                     ]"
                     row
                     label="Genero*"
                   >
-                    <v-radio
-                      label="F"
-                      color="#F7B1F4"
-                      value="F"
-                    ></v-radio>
-                    <v-radio
-                      label="M"
-                      color="primary"
-                      value="M"
-                    ></v-radio>
+                    <v-radio label="F" color="#F7B1F4" value="F"></v-radio>
+                    <v-radio label="M" color="primary" value="M"></v-radio>
                   </v-radio-group>
                 </v-flex>
               </v-layout>
@@ -233,7 +232,7 @@
                   :rules="[
                     (val) => (val || '').length > 0 || 'Campo Requerido',
                   ]"
-                  :items="['CC', 'TI']"
+                  :items="['CC', 'TI/RegistroCivil']"
                   filled
                   label="Tipo Documento*"
                   dense
@@ -242,7 +241,7 @@
 
               <v-flex col-6>
                 <v-text-field
-                v-model="numDocPaciente"
+                  v-model="numDocPaciente"
                   prepend-inner-icon="mdi-credit-card"
                   :rules="[
                     (val) => (val || '').length > 0 || 'Campo Requerido',
@@ -253,7 +252,7 @@
                 ></v-text-field>
               </v-flex>
             </v-row>
-            <v-layout wrap v-if="selUser.tipDoc == 'TI'">
+            <v-layout wrap v-if="selUser.tipDoc == 'TI/RegistroCivil'">
               <v-flex col-12 pa-0>
                 <h2 style="color: #1E88E5">
                   Información Acudiente
@@ -340,7 +339,12 @@
                   <v-row>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Tratamiento Actual?*" v-model="pregunta1" disabled>
+                        <v-radio-group
+                          column
+                          label="¿Tratamiento Actual?*"
+                          v-model="pregunta1"
+                          disabled
+                        >
                           <v-radio
                             label="Si"
                             color="primary"
@@ -356,42 +360,12 @@
                     </v-layout>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Toma Medicamentos?*"  v-model="pregunta2" disabled>
-                          <v-radio
-                            label="Si"
-                            color="primary"
-                            value="SI"
-                          ></v-radio>
-                          <v-radio
-                            label="No"
-                            color="primary"
-                            value="NO"
-                          ></v-radio>
-                        </v-radio-group>
-                      </v-flex>
-                    </v-layout>
-                  </v-row>
-
-                  <v-row>
-                    <v-layout wrap>
-                      <v-flex col-12>
-                        <v-radio-group column label="¿Alergias?*"  v-model="pregunta3" disabled>
-                          <v-radio
-                            label="Si"
-                            color="primary"
-                            value="SI"
-                          ></v-radio>
-                          <v-radio
-                            label="No"
-                            color="primary"
-                            value="NO"
-                          ></v-radio>
-                        </v-radio-group>
-                      </v-flex>
-                    </v-layout>
-                    <v-layout wrap>
-                      <v-flex col-12>
-                        <v-radio-group column label="¿Presión Arterial?*"  v-model="pregunta4" disabled>
+                        <v-radio-group
+                          column
+                          label="¿Toma Medicamentos?*"
+                          v-model="pregunta2"
+                          disabled
+                        >
                           <v-radio
                             label="Si"
                             color="primary"
@@ -410,7 +384,12 @@
                   <v-row>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Cirugías?*"  v-model="pregunta5" disabled>
+                        <v-radio-group
+                          column
+                          label="¿Alergias?*"
+                          v-model="pregunta3"
+                          disabled
+                        >
                           <v-radio
                             label="Si"
                             color="primary"
@@ -426,7 +405,57 @@
                     </v-layout>
                     <v-layout wrap>
                       <v-flex col-12>
-                        <v-radio-group column label="¿Embarazo?*"  v-model="pregunta6" disabled>
+                        <v-radio-group
+                          column
+                          label="¿Presión Arterial?*"
+                          v-model="pregunta4"
+                          disabled
+                        >
+                          <v-radio
+                            label="Si"
+                            color="primary"
+                            value="SI"
+                          ></v-radio>
+                          <v-radio
+                            label="No"
+                            color="primary"
+                            value="NO"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-flex>
+                    </v-layout>
+                  </v-row>
+
+                  <v-row>
+                    <v-layout wrap>
+                      <v-flex col-12>
+                        <v-radio-group
+                          column
+                          label="¿Cirugías?*"
+                          v-model="pregunta5"
+                          disabled
+                        >
+                          <v-radio
+                            label="Si"
+                            color="primary"
+                            value="SI"
+                          ></v-radio>
+                          <v-radio
+                            label="No"
+                            color="primary"
+                            value="NO"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout wrap>
+                      <v-flex col-12>
+                        <v-radio-group
+                          column
+                          label="¿Embarazo?*"
+                          v-model="pregunta6"
+                          disabled
+                        >
                           <v-radio
                             label="Si"
                             color="primary"
@@ -445,7 +474,7 @@
                     <v-layout wrap>
                       <v-col cols="12">
                         <v-textarea
-                         v-model="observacionesAnte"
+                          v-model="observacionesAnte"
                           outlined
                           filled
                           color="purple darken-2"
@@ -456,11 +485,10 @@
                       </v-col>
                     </v-layout>
                   </v-row>
+                  <br /><br />
                 </v-flex>
               </v-layout>
             </v-flex>
-
-            <!--NADA-->
           </v-flex>
 
           <v-flex col-12>
@@ -488,27 +516,57 @@
 
     <!-- Fin del codigo que se ejecuta para Historia Clinica -->
     <!-- Este pedaso de codsigo se ejecuta cuando le da click en el boton Realizar Tratamiento -->
-    <v-overlay :value="overlayRT" absolute class="d-flex justify-start absolute" style="width: 160%; height: 130%">
-      <v-card light style="margin-left: 100px; margin-top: 120px">
+    <v-overlay
+      :value="overlayRT"
+      absolute
+      class="d-flex justify-start absolute"
+      style="width: 160%; height: 130%"
+    >
+      <v-card light style="margin-left: 100px; margin-top: 120px; top: 190px; ">
         <v-layout wrap>
           <v-flex col-12>
-            <v-textarea
-              v-model="motivoConsulta"
-              name="input-7-1"
-              counter=""
-            ></v-textarea>
             <Odontrograma
-            :dienteSupProp="selUser.dienteSup"
-            :dienteInfProp="selUser.dienteInf"
-            :dientesLecheSupProp="selUser.dientesLecheSup"
-            :dientesLecheInfProp="selUser.dientesLecheInf"
-            :odt="true"
-            @updateOdontograma="updateOdontograma"
+              :dienteSupProp="selUser.dienteSup"
+              :dienteInfProp="selUser.dienteInf"
+              :dientesLecheSupProp="selUser.dientesLecheSup"
+              :dientesLecheInfProp="selUser.dientesLecheInf"
+              :odt="true"
+              @updateOdontograma="updateOdontograma"
             />
+                <v-flex col-12>
+                  <!--TABLA PARA EL HISTORICO -->
+                  <v-card
+                    elevation="10"
+                    style="width: 90%; position: relative; bottom: -20px; left: 70px; "
+                  >
+                    <v-flex col-12>
+                      <v-text-field
+                        v-model="search1"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                      ></v-text-field>
+                    </v-flex>
+                    <v-data-table
+                      :headers="headersHist"
+                      :search="search1"
+                      :items="selUser.historico"
+                      item-key="idHistorico"
+                      class="elevation-1"
+                    >
+                    </v-data-table>
+                  </v-card>
+                </v-flex>
+                <!--FIN TABLA PARA EL HISTORICO -->
+            <v-flex col-12 >
             <v-textarea
               v-model="observaciones"
               label="Observaciones"
+              filled
+              style="width: 100%; position: relative; top: 20px"
             ></v-textarea>
+           </v-flex>
           </v-flex>
           <v-flex col-12>
             <v-btn @click="saveTR()" class="mx-2 success">Guardar</v-btn>
@@ -535,25 +593,16 @@
     <!-- Fin del codigo que se ejecuta para Realizar Tratamiento -->
 
     <!-- inicio codigo para consulta nueva-->
-    <v-overlay :value="overlayC" absolute class="d-flex justify-start absolute" style="width: 160%; height: 130%">
+    <v-overlay
+      :value="overlayC"
+      absolute
+      class="d-flex justify-start absolute"
+      style="width: 160%; height: 130%"
+    >
       <v-card light style="margin-left: 100px; margin-top: 120px">
-        <Odontrograma :odt="false" @updateOdontograma="updateOdontograma"/>
+        <Odontrograma :odt="false" @updateOdontograma="updateOdontograma" />
         <v-layout wrap>
           <v-flex>
-            <v-col cols="12">
-              <v-textarea
-                v-model="diagnostico"
-                label="DIAGNOSTICO DEL PACIENTE"
-                outlined
-                prepend-inner-icon="mdi-comment"
-                counter
-                filled
-                maxlength="120"
-                full-width
-                single-line
-              ></v-textarea>
-            </v-col>
-
             <v-col cols="12">
               <v-textarea
                 v-model="plantratamiento"
@@ -590,63 +639,71 @@
         </v-layout>
       </v-card>
     </v-overlay>
-
     <!--fin codigo consulta nueva-->
   </div>
 </template>
 <script>
-import Odontrograma from '../components/Odontrograma'
+import Odontrograma from "../components/Odontrograma";
 export default {
   components: { Odontrograma },
   data: () => ({
     date: new Date().toISOString().substr(0, 10),
-      search: "",
-      overlayHC: false,
-      overlayC: false,
-      updatedAlert: false,
-      overlayRT: false,
-      motivoConsulta: "",
-      odontogramaAnt: "",
-      diagnostico: "",
-      plantratamiento: "",
-      observaciones: "",
-      nombrePaciente: "",
-      apellidosPaciente: "",
-      dirPaciente: "",
-      correoPaciente: "",
-      telPaciente: "",
-      epsPaciente: "",
-      rhPaciente:"",
-      generoPaciente:"",
-      fechaNacimiento:"",
-      tipoDocPaciente:"",
-      numDocPaciente:"",
-      nombreAcudiente:"",
-      apellidosAcudiente:"",
-      telAcudiente:"",
-      parentescoAcudiente:"",
-      modal:false,
-      pregunta1:"",
-      pregunta2:"",
-      pregunta3:"",
-      pregunta4:"",
-      pregunta5:"",
-      pregunta6:"",
-      observacionesAnte:"",
-      selUser: {},
-      headers: [
-        //{ text: "#", filterable: false, align: "center", value: "id" },
-        { text: "Nombre", align: "center", value: "name" },
-        { text: "Apellidos", align: "center", value: "lastname" },
-        { text: "Dirección", align: "center", value: "address" },
-        { text: "Documento", align: "center", value: "cc" },
-        { text: "Opciones", align: "center", value: "opciones" },
-      ],
-      patientsList: [],
-      selColor: "vacio",
-      loading: false
-      
-    }),  
+    search: "",
+    search1: "",
+    //searchHis:"",
+    selectHis: [],
+    overlayHC: false,
+    overlayC: false,
+    updatedAlert: false,
+    overlayRT: false,
+    motivoConsulta: "",
+    odontogramaAnt: "",
+    diagnostico: "",
+    plantratamiento: "",
+    observaciones: "",
+    nombrePaciente: "",
+    apellidosPaciente: "",
+    dirPaciente: "",
+    correoPaciente: "",
+    telPaciente: "",
+    epsPaciente: "",
+    rhPaciente: "",
+    generoPaciente: "",
+    fechaNacimiento: "",
+    tipoDocPaciente: "",
+    numDocPaciente: "",
+    nombreAcudiente: "",
+    apellidosAcudiente: "",
+    telAcudiente: "",
+    parentescoAcudiente: "",
+    modal: false,
+    pregunta1: "",
+    pregunta2: "",
+    pregunta3: "",
+    pregunta4: "",
+    pregunta5: "",
+    pregunta6: "",
+    observacionesAnte: "",
+    selUser: {},
+    headersHist: [
+      { text: "Diente", value: "diente" },
+      { text: "Nombre", value: "name" },
+      { text: "Tratamiento", value: "tratamiento" },
+      { text: "Fecha", value: "fechahistorico" }
+    ],
+    historic: [],
+    headers: [
+      //{ text: "#", filterable: false, align: "center", value: "id" },
+      { text: "Nombre", align: "center", value: "name" },
+      { text: "Apellidos", align: "center", value: "lastname" },
+      { text: "Dirección", align: "center", value: "address" },
+      { text: "Documento", align: "center", value: "cc" },
+      { text: "Opciones", align: "center", value: "opciones" },
+    ],
+    patientsList: [],
+    selColor: "vacio",
+    loading: false,
+  }),
 
   methods: {
     selectUser(user) {
@@ -663,8 +720,9 @@ export default {
       this.rhPaciente = user.rhP;
       this.generoPaciente = user.gender;
       this.fechaNacimiento = user.hb;
-      this.motivoConsulta = user.plantratamiento
-      this.observaciones = user.diagnostico
+      this.motivoConsulta = user.plantratamiento;
+      this.observaciones = user.plantratamiento;
+      this.pregunta1 = user.pregunta1;
     },
     async saveTR() {
       let data = {
@@ -674,37 +732,78 @@ export default {
         dientesLecheSup: this.selUser.dientesLecheSup,
         dientesLecheInf: this.selUser.dientesLecheInf,
         diagnostico: this.observaciones,
-        planTratamiento: this.motivoConsulta
-      }
+        planTratamiento: this.motivoConsulta,
+      };
       await fetch("http://localhost:3304/Odontograma", {
-        method: 'PUT',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data)
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(data),
       })
-        .then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => {
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteSup = this.selUser.dienteSup
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteInf = this.selUser.dienteInf
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheSup = this.selUser.dientesLecheSup
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheInf = this.selUser.dientesLecheInf
-          this.patientsList[this.patientsList.indexOf(this.selUser)].diagnostico = this.observaciones
-          this.patientsList[this.patientsList.indexOf(this.selUser)].plantratamiento = this.motivoConsulta
-          this.updatedAlert = true
-        })
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error))
+        .then((response) => {
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dienteSup = this.selUser.dienteSup;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dienteInf = this.selUser.dienteInf;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dientesLecheSup = this.selUser.dientesLecheSup;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dientesLecheInf = this.selUser.dientesLecheInf;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].diagnostico = this.observaciones;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].plantratamiento = this.motivoConsulta;
+          this.updatedAlert = true;
+        });
+      console.log(this.selUser.historico);
+      let hist = {
+        idHistorico: this.selUser.idHistorico,
+        historico: this.selUser.historico,
+      };
+      await fetch("http://localhost:3304/historico", {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(hist),
+      })
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error))
+        .then((response) => {
+          console.log(response);
+        });
     },
-    updateOdontograma(dienteSup, dienteInf, dientesLecheSup, dientesLecheInf) {
-      this.selUser.dienteSup = dienteSup
-      this.selUser.dienteInf = dienteInf
-      this.selUser.dientesLecheSup = dientesLecheSup
-      this.selUser.dientesLecheInf = dientesLecheInf
+    updateOdontograma(
+      dienteSup,
+      dienteInf,
+      dientesLecheSup,
+      dientesLecheInf,
+      historico
+    ) {
+      this.selUser.dienteSup = dienteSup;
+      this.selUser.dienteInf = dienteInf;
+      this.selUser.dientesLecheSup = dientesLecheSup;
+      this.selUser.dientesLecheInf = dientesLecheInf;
+      this.selUser.historico.push(historico);
     },
     async saveC() {
       let data = {
@@ -714,58 +813,126 @@ export default {
         dientesLecheInf: this.selUser.dientesLecheInf,
         diagnostico: this.diagnostico,
         planTratamiento: this.plantratamiento,
-        idPaciente: this.selUser.id
-      }
+        idPaciente: this.selUser.id,
+      };
       await fetch("http://localhost:3304/Odontograma", {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data)
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(data),
       })
-        .then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(async response => {
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteSup = this.selUser.dienteSup;
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dienteInf = this.selUser.dienteInf;
-          this.patientsList[ this.patientsList.indexOf(this.selUser)].dientesLecheSup = this.selUser.dientesLecheSup;
-          this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheInf = this.selUser.dientesLecheInf;
-          this.patientsList[this.patientsList.indexOf(this.selUser)].diagnostico = this.diagnostico
-          this.patientsList[this.patientsList.indexOf(this.selUser)].plantratamiento = this.plantratamiento
-          await fetch ("http://localhost:3304/Odontograma/" + this.selUser.id)
-              .then(res => res.json())
-              .catch(error => console.error('Error:', error))
-              .then(response => {
-                if (response.length > 0) {
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].idOdontograma = response[0].idOdontograma
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].dienteSup = response[0].dienteSup
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].dienteInf = response[0].dienteInf
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheSup = response[0].dienteLecheSup
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].dientesLecheInf = response[0].dienteLecheInf
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].diagnostico = response[0].diagnostico
-                  this.patientsList[this.patientsList.indexOf(this.selUser)].plantratamiento = response[0].planTratamiento
-                }
-              })
-        })
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error))
+        .then(async () => {
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dienteSup = this.selUser.dienteSup;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dienteInf = this.selUser.dienteInf;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dientesLecheSup = this.selUser.dientesLecheSup;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].dientesLecheInf = this.selUser.dientesLecheInf;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].diagnostico = this.diagnostico;
+          this.patientsList[
+            this.patientsList.indexOf(this.selUser)
+          ].plantratamiento = this.plantratamiento;
+          await fetch("http://localhost:3304/Odontograma/" + this.selUser.id)
+            .then((res) => res.json())
+            .catch((error) => console.error("Error:", error))
+            .then((response) => {
+              if (response.length > 0) {
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].idOdontograma = response[0].idOdontograma;
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].dienteSup = response[0].dienteSup;
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].dienteInf = response[0].dienteInf;
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].dientesLecheSup = response[0].dienteLecheSup;
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].dientesLecheInf = response[0].dienteLecheInf;
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].diagnostico = response[0].diagnostico;
+                this.patientsList[
+                  this.patientsList.indexOf(this.selUser)
+                ].plantratamiento = response[0].planTratamiento;
+              }
+            });
+        });
+
+      let datahistorico = {
+        historico: this.selUser.historico,
+        idPaciente: this.selUser.id,
+      };
+      await fetch("http://localhost:3304/historico", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(datahistorico),
+      })
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error))
+        .then(async (response) => {});
       this.updatedAlert = true;
     },
     async saveHC() {
-      this.patientsList[this.patientsList.indexOf(this.selUser)].name = this.nombrePaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].lastname = this.apellidosPaciente;
-      this.patientsList[ this.patientsList.indexOf(this.selUser)].address = this.dirPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].email = this.correoPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser) ].phone = this.telPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].eps = this.epsPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].cc = this.numDocPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].rhP = this.rhPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].gender = this.generoPaciente;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].hb = this.fechaNacimiento;
-      this.patientsList[this.patientsList.indexOf(this.selUser)].tipDoc = this.tipoDocPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].name = this.nombrePaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].lastname = this.apellidosPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].address = this.dirPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].email = this.correoPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].phone = this.telPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].eps = this.epsPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].cc = this.numDocPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].rhP = this.rhPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].gender = this.generoPaciente;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].hb = this.fechaNacimiento;
+      this.patientsList[
+        this.patientsList.indexOf(this.selUser)
+      ].tipDoc = this.tipoDocPaciente;
 
       let data = {
         nombres: this.nombrePaciente,
@@ -779,95 +946,111 @@ export default {
         telefono: this.telPaciente,
         email: this.email,
         eps: this.epsPaciente,
-        idPaciente: this.selUser.id
-      }
+        idPaciente: this.selUser.id,
+      };
 
       await fetch("http://localhost:3304/Paciente", {
-        method: 'PUT',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data)
-      }).then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => {
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error))
+        .then((response) => {
           if (!response.error) {
             this.updatedAlert = true;
           } else {
           }
-        })
+        });
     },
 
     async getInfo() {
-      if (this.selUser.tipDoc == 'TI') {
-        await fetch("http://localhost:3304/Acudiente/" + this.selUser.id,{})
-          .then(res => res.json())
-          .catch(error => console.error('Error:', error))
-          .then(async response => {
-            this.nombreAcudiente = response[0].nombres
-            this.apellidosAcudiente = response[0].apellidos
-            this.telAcudiente = response[0].telefono
-            this.parentescoAcudiente = response[0].parentesco
-        })
+      if (this.selUser.tipDoc == "TI/RegistroCivil") {
+        await fetch("http://localhost:3304/Acudiente/" + this.selUser.id, {})
+          .then((res) => res.json())
+          .catch((error) => console.error("Error:", error))
+          .then((response) => {
+            this.nombreAcudiente = response[0].nombres;
+            this.apellidosAcudiente = response[0].apellidos;
+            this.telAcudiente = response[0].telefono;
+            this.parentescoAcudiente = response[0].parentesco;
+          });
       }
-      await fetch("http://localhost:3304/Antecedente/" + this.selUser.id,{})
-        .then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => {
-          this.pregunta1 = response[0].pregunta1
-          this.pregunta2 = response[0].pregunta2
-          this.pregunta3 = response[0].pregunta3
-          this.pregunta4 = response[0].pregunta4
-          this.pregunta5 = response[0].pregunta5
-          this.pregunta6 = response[0].pregunta6
-          this.observacionesAnte = response[0].observacion
-      })
+      await fetch("http://localhost:3304/Antecedente/" + this.selUser.id, {})
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error))
+        .then((response) => {
+          this.pregunta1 = response[0].pregunta1;
+          this.pregunta2 = response[0].pregunta2;
+          this.pregunta3 = response[0].pregunta3;
+          this.pregunta4 = response[0].pregunta4;
+          this.pregunta5 = response[0].pregunta5;
+          this.pregunta6 = response[0].pregunta6;
+          this.observacionesAnte = response[0].observacion;
+        });
     },
   },
   async mounted() {
-    this.loading = true
-    await fetch ("http://localhost:3304/Paciente/Odontologo/" + this.$store.state.user.idOdontologo)
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-        .then(async response => {
-          response.forEach(async element => {
-            let itemTemp = {}
-            itemTemp.id = element.idPaciente
-            itemTemp.name = element.nombres
-            itemTemp.lastname = element.apellidos
-            itemTemp.cc = element.numeroIdentificacion
-            itemTemp.tipDoc = element.tipoIdentificacion
-            itemTemp.hb = element.fechaNacimiento
-            itemTemp.address = element.direccion
-            itemTemp.gender = element.genero
-            itemTemp.rhP = element.rh
-            itemTemp.phone = element.telefono
-            itemTemp.email = element.email
-            itemTemp.eps = element.eps
-            await fetch ("http://localhost:3304/Odontograma/" + element.idPaciente)
-              .then(res => res.json())
-              .catch(error => console.error('Error:', error))
-              .then(response => {
-                if (response.length > 0) {
-                  itemTemp.idOdontograma = response[0].idOdontograma
-                  itemTemp.dienteSup = response[0].dienteSup
-                  itemTemp.dienteInf = response[0].dienteInf
-                  itemTemp.dientesLecheSup = response[0].dienteLecheSup
-                  itemTemp.dientesLecheInf = response[0].dienteLecheInf
-                  itemTemp.diagnostico = response[0].diagnostico
-                  itemTemp.plantratamiento = response[0].planTratamiento
-                }
-              })
-            this.patientsList.push(itemTemp)
-          });
+    this.loading = true;
+    await fetch(
+      "http://localhost:3304/Paciente/Odontologo/" +
+        this.$store.state.user.idOdontologo
+    )
+      .then((res) => res.json())
+      .catch((error) => console.error("Error:", error))
+      .then(async (response) => {
+        response.forEach(async (element) => {
+          let itemTemp = {};
+          itemTemp.id = element.idPaciente;
+          itemTemp.name = element.nombres;
+          itemTemp.lastname = element.apellidos;
+          itemTemp.cc = element.numeroIdentificacion;
+          itemTemp.tipDoc = element.tipoIdentificacion;
+          itemTemp.hb = element.fechaNacimiento;
+          itemTemp.address = element.direccion;
+          itemTemp.gender = element.genero;
+          itemTemp.rhP = element.rh;
+          itemTemp.phone = element.telefono;
+          itemTemp.email = element.email;
+          itemTemp.eps = element.eps;
+          await fetch("http://localhost:3304/Odontograma/" + element.idPaciente)
+            .then((res) => res.json())
+            .catch((error) => console.error("Error:", error))
+            .then((response) => {
+              if (response.length > 0) {
+                itemTemp.idOdontograma = response[0].idOdontograma;
+                itemTemp.dienteSup = response[0].dienteSup;
+                itemTemp.dienteInf = response[0].dienteInf;
+                itemTemp.dientesLecheSup = response[0].dienteLecheSup;
+                itemTemp.dientesLecheInf = response[0].dienteLecheInf;
+                itemTemp.diagnostico = response[0].diagnostico;
+                itemTemp.plantratamiento = response[0].planTratamiento;
+              }
+            });
+          await fetch("http://localhost:3304/historico/" + element.idPaciente)
+            .then((res) => res.json())
+            .catch((error) => console.error("Error:", error))
+            .then((response) => {
+              if (response.length > 0) {
+                console.log(response[0]);
+                itemTemp.historico = JSON.parse(response[0].historia);
+                itemTemp.idHistorico = response[0].idhistorico;
+              } else {
+                itemTemp.historico = [];
+              }
+            });
+          this.patientsList.push(itemTemp);
+          this.loading = false;
         });
-    this.loading = false
-  }, 
+      });
+  },
 };
 </script>
 <style>

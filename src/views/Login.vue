@@ -207,7 +207,7 @@ export default {
       this.$store.state.user.identify = localStorage.identify
       this.$store.state.user.address = localStorage.address
       this.$store.state.user.register = localStorage.register
-      this.$store.state.user.description = localStorage.descripcion
+      this.$store.state.user.description = localStorage.description
       this.$store.state.user.idOdontologo = localStorage.idOdontologo
       this.$router.push('/').catch(()=>{})
     }

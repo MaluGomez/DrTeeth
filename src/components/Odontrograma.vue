@@ -9,6 +9,7 @@
         <v-btn class="mx-2 yellow" @click="selColor='yellow'">OBTURACIÓN</v-btn>
         <v-btn class="mx-2 green" @click="selColor='green'">EXTRACCIÓN</v-btn>
         <v-btn class="mx-2 orange" @click="selColor='orange'">PROTESIS</v-btn>
+        <v-btn class="mx-2" color="#1ABC9C" @click="selColor='#1ABC9C'" v-if="odt">FINALIZADO</v-btn>
       </v-flex>
       <v-layout>
         <v-flex class="text-center" v-for="nd in dienteSup" :key="nd.d" flex>
@@ -180,108 +181,122 @@ export default {
       colorSegundoBoton: 'yellow',
       colorTercerBoton: 'green',
       colorCuartoBoton: 'orange',
+      colorQuintoBoton: '#1ABC9C',
       alertColor: false // falta implementar una alerta para el color verde!!!!
     }
   },
   methods: {
     changeColor(id) {
+      let historico = {}
+      let f = new Date();
       if (this.selColor == this.colorPrimerBoton) {
         if (document.getElementById(id).style.color != this.colorTercerBoton) {
           document.getElementById(id).style.color = this.colorPrimerBoton;
+          historico.diente = id.substring(0,id.length - 2)
+          historico.tratamiento = 'carie'
+          historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheSup.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheSup = tempArray
           } else if (this.dientesLecheInf.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheInf.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheInf = tempArray
           } else if (this.dienteSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dienteSup.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : 'grey'
               tempArray.push(item)
             })
             this.dienteSup = tempArray
           } else {
             let tempArray = []
             this.dienteInf.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorPrimerBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorPrimerBoton : 'grey'
               tempArray.push(item)
             })
             this.dienteInf = tempArray
           }
+          this.$emit('updateOdontograma', this.dienteSup, this.dienteInf, this.dientesLecheSup, this.dientesLecheInf, historico)
         }
       } else if (this.selColor == this.colorSegundoBoton) {
         if (document.getElementById(id).style.color != this.colorTercerBoton) {
           document.getElementById(id).style.color = this.colorSegundoBoton;
+          historico.diente = id.substring(0,id.length - 2)
+          historico.tratamiento = 'obturación'
+          historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+          //historico.fechahistorico = new Date();
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheSup.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheSup = tempArray
           } else if (this.dientesLecheInf.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheInf.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheInf = tempArray
           } else if (this.dienteSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dienteSup.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : 'grey'
               tempArray.push(item)
             })
             this.dienteSup = tempArray
           } else {
             let tempArray = []
             this.dienteInf.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorSegundoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorSegundoBoton : 'grey'
               tempArray.push(item)
             })
             this.dienteInf = tempArray
           }
+          this.$emit('updateOdontograma', this.dienteSup, this.dienteInf, this.dientesLecheSup, this.dientesLecheInf, historico)
         }
       } else if (this.selColor == this.colorCuartoBoton) {
         if (document.getElementById(id).style.color != this.colorTercerBoton) {
@@ -290,51 +305,57 @@ export default {
           } else {
             document.getElementById(id).style.color = this.colorCuartoBoton;
           }
+          historico.diente = id.substring(0,id.length - 2)
+          historico.tratamiento = 'Protesis'
+          historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+          //historico.fechahistorico = new Date();
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheSup.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheSup = tempArray
           } else if (this.dientesLecheInf.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheInf.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheInf = tempArray
           } else if (this.dienteSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dienteSup.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : 'grey'
               tempArray.push(item)
             })
             this.dienteSup = tempArray
           } else {
             let tempArray = []
             this.dienteInf.forEach(item => {
-              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : ''
-              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : ''
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.sup = 'grey' : item.sup = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.inf = 'grey' : item.inf = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.izq = 'grey' : item.izq = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.der = 'grey' : item.der = this.colorCuartoBoton) : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorCuartoBoton ? item.med = 'grey' : item.med = this.colorCuartoBoton) : 'grey'
               tempArray.push(item)
             })
             this.dienteInf = tempArray
           }
+          this.$emit('updateOdontograma', this.dienteSup, this.dienteInf, this.dientesLecheSup, this.dientesLecheInf, historico)
         }
       } else if (this.selColor == this.colorTercerBoton) {
         if (document.getElementById(id).style.color == this.colorTercerBoton) {
@@ -350,55 +371,113 @@ export default {
           document.getElementById(id.substring(0,id.length -1)+'m').style.color = this.colorTercerBoton;
           document.getElementById(id.substring(0,id.length -1)+'b').style.color = this.colorTercerBoton;
         }
+        historico.diente = id.substring(0,id.length - 2)
+        historico.tratamiento = 'Extracción'
+        historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
+        historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+        //historico.fechahistorico = new Date();
         if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheSup.forEach(item => {
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : ''
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheSup = tempArray
           } else if (this.dientesLecheInf.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheInf.forEach(item => {
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : ''
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : 'grey'
               tempArray.push(item)
             })
             this.dientesLecheInf = tempArray
           } else if (this.dienteSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dienteSup.forEach(item => {
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : ''
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : 'grey'
               tempArray.push(item)
             })
             this.dienteSup = tempArray
           } else {
             let tempArray = []
             this.dienteInf.forEach(item => {
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : ''
-              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : ''
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.sup = 'grey' : item.sup = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.inf = 'grey' : item.inf = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.izq = 'grey' : item.izq = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.der = 'grey' : item.der = this.colorTercerBoton) : 'grey'
+              item.d == id.substring(0,id.length -2) ? ( document.getElementById(id).style.color != this.colorTercerBoton ? item.med = 'grey' : item.med = this.colorTercerBoton) : 'grey'
               tempArray.push(item)
             })
             this.dienteInf = tempArray
           }
-      } else {
+          this.$emit('updateOdontograma', this.dienteSup, this.dienteInf, this.dientesLecheSup, this.dientesLecheInf, historico)
+      } else if (this.selColor == this.colorQuintoBoton) {
+          document.getElementById(id).style.color = this.colorQuintoBoton;
+          historico.diente = id.substring(0,id.length - 2)
+          historico.tratamiento = 'Check'
+          historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
+          historico.fechahistorico = new Date();
+          if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
+            let tempArray = []
+            this.dientesLecheSup.forEach(item => {
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorQuintoBoton : 'grey'
+              tempArray.push(item)
+            })
+            this.dientesLecheSup = tempArray
+          } else if (this.dientesLecheInf.find(elemento => elemento.d == id.substring(0,id.length -2))) {
+            let tempArray = []
+            this.dientesLecheInf.forEach(item => {
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorQuintoBoton : 'grey'
+              tempArray.push(item)
+            })
+            this.dientesLecheInf = tempArray
+          } else if (this.dienteSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
+            let tempArray = []
+            this.dienteSup.forEach(item => {
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorQuintoBoton : 'grey'
+              tempArray.push(item)
+            })
+            this.dienteSup = tempArray
+          } else {
+            let tempArray = []
+            this.dienteInf.forEach(item => {
+              id.charAt(id.length-1) == 't' && item.d == id.substring(0,id.length -2) ? item.sup = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'b' && item.d == id.substring(0,id.length -2) ? item.inf = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'l' && item.d == id.substring(0,id.length -2) ? item.izq = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'r' && item.d == id.substring(0,id.length -2) ? item.der = this.colorQuintoBoton : 'grey'
+              id.charAt(id.length-1) == 'm' && item.d == id.substring(0,id.length -2) ? item.med = this.colorQuintoBoton : 'grey'
+              tempArray.push(item)
+            })
+            this.dienteInf = tempArray
+          }
+          this.$emit('updateOdontograma', this.dienteSup, this.dienteInf, this.dientesLecheSup, this.dientesLecheInf, historico)
+      }
+      else {
         this.alertColor = true
       }
-      this.$emit('updateOdontograma', this.dienteSup, this.dienteInf, this.dientesLecheSup, this.dientesLecheInf)
     }
   },
   mounted() {
