@@ -166,6 +166,7 @@
                   :items="['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-']"
                   label="Tipo de Sangre*"
                   dense
+                  disabled
                 ></v-select>
               </v-flex>
             </v-row>
@@ -185,7 +186,9 @@
                           (val) => (val || '').length > 0 || 'Campo Requerido',
                         ]"
                         v-model="fechaNacimiento"
-                        label="Picker in dialog"
+                        label="Fecha Nacimiento"
+                        disabled
+                        
                         prepend-icon="mdi-calendar"
                         readonly
                         v-bind="attrs"
@@ -249,6 +252,7 @@
                   color="purple darken-2"
                   label="Número Documento*"
                   required
+                  disabled
                 ></v-text-field>
               </v-flex>
             </v-row>
@@ -724,6 +728,7 @@ export default {
       this.observaciones = user.plantratamiento;
       this.pregunta1 = user.pregunta1;
     },
+    //GUARDAR TRATAMIENTO (INSERTAR Y ACTUALIZAR)
     async saveTR() {
       let data = {
         idOdontograma: this.selUser.idOdontograma,
@@ -769,7 +774,7 @@ export default {
           ].plantratamiento = this.motivoConsulta;
           this.updatedAlert = true;
         });
-      console.log(this.selUser.historico);
+      
       let hist = {
         idHistorico: this.selUser.idHistorico,
         historico: this.selUser.historico,
@@ -789,7 +794,6 @@ export default {
         .then((res) => res.json())
         .catch((error) => console.error("Error:", error))
         .then((response) => {
-          console.log(response);
         });
     },
     updateOdontograma(
@@ -970,7 +974,6 @@ export default {
           }
         });
     },
-
     async getInfo() {
       if (this.selUser.tipDoc == "TI/RegistroCivil") {
         await fetch("http://localhost:3304/Acudiente/" + this.selUser.id, {})
@@ -1039,7 +1042,6 @@ export default {
             .catch((error) => console.error("Error:", error))
             .then((response) => {
               if (response.length > 0) {
-                console.log(response[0]);
                 itemTemp.historico = JSON.parse(response[0].historia);
                 itemTemp.idHistorico = response[0].idhistorico;
               } else {

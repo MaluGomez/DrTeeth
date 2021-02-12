@@ -117,6 +117,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
+                        disabled
                         v-model="date"
                         label="Fecha Nacimiento"
                         prepend-icon="mdi-calendar"
@@ -148,12 +149,14 @@
                     filled
                     label="Tipo Documento*"
                     dense
+                    disabled
                   ></v-select>
                 </v-flex>
                 <v-flex col-6>
                   <v-text-field
                     v-model="numDoc"
                     filled
+                    disabled
                     prepend-inner-icon="mdi-credit-card"
                     :rules="[
                       (val) => (val || '').length > 0 || 'Campo Requerido',
@@ -174,6 +177,7 @@
                     color="purple darken-2"
                     label="NúmeroRegistroProfesional*"
                     required
+                    disabled
                   ></v-text-field>
                 </v-flex>
                 <v-flex col-6>

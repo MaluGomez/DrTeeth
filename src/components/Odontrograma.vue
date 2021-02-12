@@ -195,7 +195,7 @@ export default {
           historico.diente = id.substring(0,id.length - 2)
           historico.tratamiento = 'carie'
           historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
-          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes()
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheSup.forEach(item => {
@@ -249,7 +249,7 @@ export default {
           historico.diente = id.substring(0,id.length - 2)
           historico.tratamiento = 'obturación'
           historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
-          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes()
           //historico.fechahistorico = new Date();
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
@@ -308,7 +308,7 @@ export default {
           historico.diente = id.substring(0,id.length - 2)
           historico.tratamiento = 'Protesis'
           historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
-          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes()
           //historico.fechahistorico = new Date();
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
@@ -374,7 +374,7 @@ export default {
         historico.diente = id.substring(0,id.length - 2)
         historico.tratamiento = 'Extracción'
         historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
-        historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDay() + " " + f.getHours() + ":" + f.getMinutes()
+        historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes()
         //historico.fechahistorico = new Date();
         if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []

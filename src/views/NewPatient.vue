@@ -667,7 +667,6 @@ export default {
           .then(res => res.json())
           .catch(error => console.error('Error:', error))
           .then(async response => {
-            console.log(response)
             idPaciente = response.insertId
             let data = {
               pregunta1: this.pregunta1,
@@ -719,7 +718,6 @@ export default {
           .then(res => res.json())
           .catch(error => console.error('Error:', error))
           .then(response => {
-            console.log(response)
           })
       }
       this.updatedAlert = true;
