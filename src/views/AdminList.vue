@@ -115,7 +115,7 @@ export default {
   },
 
   mounted () {
-    fetch ("http://localhost:3304/Administrador")
+    fetch ("https://drteeth12.herokuapp.com/Administrador")
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
         .then(response => {
