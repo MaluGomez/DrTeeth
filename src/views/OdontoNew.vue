@@ -335,7 +335,7 @@ export default {
         numeroRegistro: this.numRegistro,
         descripcion: this.descripcion
       };
-      const response = await fetch("http://localhost:3304/Odontologo", {
+      const response = await fetch("https://drteeth.herokuapp.com/Odontologo", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

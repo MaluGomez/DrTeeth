@@ -182,7 +182,7 @@ export default {
     async saveCita() {
       if (this.valid) {
         let pacienteTemp = {};
-        await fetch("http://localhost:3304/Paciente/" + this.numDoc, {})
+        await fetch("https://drteeth.herokuapp.com/Paciente/" + this.numDoc, {})
           .then((res) => res.json())
           .catch((error) => console.error("Error:", error))
           .then((response) => {
@@ -206,7 +206,7 @@ export default {
             idOdontologo: this.$store.state.user.idOdontologo,
           };
 
-          await fetch("http://localhost:3304/Cita", {
+          await fetch("https://drteeth.herokuapp.com/Cita", {
             method: "POST",
             mode: "cors",
             cache: "no-cache",

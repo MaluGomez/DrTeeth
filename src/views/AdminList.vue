@@ -155,7 +155,7 @@ export default {
         telefono: this.selUser.phoneA,
         idAdministrador: this.selUser.id
       }
-      await fetch("http://localhost:3304/Administrador", {
+      await fetch("https://drteeth.herokuapp.com/Administrador", {
         method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',

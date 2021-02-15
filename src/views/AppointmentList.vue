@@ -64,7 +64,7 @@ export default {
   }),
 
   mounted () {
-    fetch ("http://localhost:3304/Cita/Odontologo/" + this.$store.state.user.idOdontologo)
+    fetch ("https://drteeth.herokuapp.com/Cita/Odontologo/" + this.$store.state.user.idOdontologo)
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
         .then(response => {
@@ -94,7 +94,7 @@ export default {
     async deleteCita(user) {
       this.selectUser(user)
       
-      await fetch ("http://localhost:3304/Cita/" + this.selUser.id, {method: 'DELETE'})
+      await fetch ("https://drteeth.herokuapp.com/Cita/" + this.selUser.id, {method: 'DELETE'})
         .then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => {

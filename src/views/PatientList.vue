@@ -739,7 +739,7 @@ export default {
         diagnostico: this.observaciones,
         planTratamiento: this.motivoConsulta,
       };
-      await fetch("http://localhost:3304/Odontograma", {
+      await fetch("https://drteeth.herokuapp.com/Odontograma", {
         method: "PUT",
         mode: "cors",
         cache: "no-cache",
@@ -779,7 +779,7 @@ export default {
         idHistorico: this.selUser.idHistorico,
         historico: this.selUser.historico,
       };
-      await fetch("http://localhost:3304/historico", {
+      await fetch("https://drteeth.herokuapp.com/historico", {
         method: "PUT",
         mode: "cors",
         cache: "no-cache",
@@ -819,7 +819,7 @@ export default {
         planTratamiento: this.plantratamiento,
         idPaciente: this.selUser.id,
       };
-      await fetch("http://localhost:3304/Odontograma", {
+      await fetch("https://drteeth.herokuapp.com/Odontograma", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -852,7 +852,7 @@ export default {
           this.patientsList[
             this.patientsList.indexOf(this.selUser)
           ].plantratamiento = this.plantratamiento;
-          await fetch("http://localhost:3304/Odontograma/" + this.selUser.id)
+          await fetch("https://drteeth.herokuapp.com/Odontograma/" + this.selUser.id)
             .then((res) => res.json())
             .catch((error) => console.error("Error:", error))
             .then((response) => {
@@ -886,7 +886,7 @@ export default {
         historico: this.selUser.historico,
         idPaciente: this.selUser.id,
       };
-      await fetch("http://localhost:3304/historico", {
+      await fetch("https://drteeth.herokuapp.com/historico", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -953,7 +953,7 @@ export default {
         idPaciente: this.selUser.id,
       };
 
-      await fetch("http://localhost:3304/Paciente", {
+      await fetch("https://drteeth.herokuapp.com/Paciente", {
         method: "PUT",
         mode: "cors",
         cache: "no-cache",
@@ -976,7 +976,7 @@ export default {
     },
     async getInfo() {
       if (this.selUser.tipDoc == "TI/RegistroCivil") {
-        await fetch("http://localhost:3304/Acudiente/" + this.selUser.id, {})
+        await fetch("https://drteeth.herokuapp.com/Acudiente/" + this.selUser.id, {})
           .then((res) => res.json())
           .catch((error) => console.error("Error:", error))
           .then((response) => {
@@ -986,7 +986,7 @@ export default {
             this.parentescoAcudiente = response[0].parentesco;
           });
       }
-      await fetch("http://localhost:3304/Antecedente/" + this.selUser.id, {})
+      await fetch("https://drteeth.herokuapp.com/Antecedente/" + this.selUser.id, {})
         .then((res) => res.json())
         .catch((error) => console.error("Error:", error))
         .then((response) => {
@@ -1003,7 +1003,7 @@ export default {
   async mounted() {
     this.loading = true;
     await fetch(
-      "http://localhost:3304/Paciente/Odontologo/" +
+      "https://drteeth.herokuapp.com/Paciente/Odontologo/" +
         this.$store.state.user.idOdontologo
     )
       .then((res) => res.json())
@@ -1023,7 +1023,7 @@ export default {
           itemTemp.phone = element.telefono;
           itemTemp.email = element.email;
           itemTemp.eps = element.eps;
-          await fetch("http://localhost:3304/Odontograma/" + element.idPaciente)
+          await fetch("https://drteeth.herokuapp.com/Odontograma/" + element.idPaciente)
             .then((res) => res.json())
             .catch((error) => console.error("Error:", error))
             .then((response) => {
@@ -1037,7 +1037,7 @@ export default {
                 itemTemp.plantratamiento = response[0].planTratamiento;
               }
             });
-          await fetch("http://localhost:3304/historico/" + element.idPaciente)
+          await fetch("https://drteeth.herokuapp.com/historico/" + element.idPaciente)
             .then((res) => res.json())
             .catch((error) => console.error("Error:", error))
             .then((response) => {

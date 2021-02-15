@@ -185,7 +185,7 @@ export default {
         telefono: this.telefono,
         contrasena: this.password
       };
-      const response = await fetch("http://localhost:3304/Administrador", {
+      const response = await fetch("https://drteeth.herokuapp.com/Administrador", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

@@ -274,7 +274,7 @@ export default {
     ],
   }),
     mounted () {
-    fetch ("http://localhost:3304/Odontologo")
+    fetch ("https://drteeth.herokuapp.com/Odontologo")
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
         .then(response => {
@@ -364,7 +364,7 @@ export default {
         descripcion: this.selUser.description,
         idOdontologo: this.selUser.id
       }
-      await fetch("http://localhost:3304/Odontologo", {
+      await fetch("https://drteeth.herokuapp.com/Odontologo", {
         method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',

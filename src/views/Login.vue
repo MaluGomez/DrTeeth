@@ -137,7 +137,7 @@ export default {
           password: this.password,
           user: this.email
         }
-        await fetch("http://localhost:3304/Auth", {
+        await fetch("https://drteeth.herokuapp.com/Auth", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

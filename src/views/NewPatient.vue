@@ -652,7 +652,7 @@ export default {
         eps: this.eps,
         idOdontologo: this.$store.state.user.idOdontologo
       };
-      await fetch("http://localhost:3304/Paciente", {
+      await fetch("https://drteeth.herokuapp.com/Paciente", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -678,7 +678,7 @@ export default {
               observaciones: this.observaciones,
               idPaciente: response.insertId
             }
-            await fetch("http://localhost:3304/Antecedente", {
+            await fetch("https://drteeth.herokuapp.com/Antecedente", {
               method: 'POST',
               mode: 'cors',
               cache: 'no-cache',
@@ -703,7 +703,7 @@ export default {
           parentesco: this.parentesco,
           idPaciente: idPaciente
         }
-        await fetch("http://localhost:3304/Acudiente", {
+        await fetch("https://drteeth.herokuapp.com/Acudiente", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
