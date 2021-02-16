@@ -115,7 +115,7 @@ export default {
   },
 
   mounted () {
-    fetch ("https://drteeth12.herokuapp.com/Administrador")
+    fetch ("http://localhost:3304/Administrador")
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
         .then(response => {
@@ -155,7 +155,7 @@ export default {
         telefono: this.selUser.phoneA,
         idAdministrador: this.selUser.id
       }
-      await fetch("https://drteeth.herokuapp.com/Administrador", {
+      await fetch("http://localhost:3304/Administrador", {
         method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',
