@@ -1,4 +1,4 @@
-# malu_pg
+# Dr Teeth
 
 ## Project setup
 ```

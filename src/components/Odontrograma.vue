@@ -427,7 +427,8 @@ export default {
           historico.diente = id.substring(0,id.length - 2)
           historico.tratamiento = 'Check'
           historico.name = id.substring(3,id.length) == 't' ? 'Vestibular' : (id.substring(3,id.length) == 'b' ? 'Palatino' : (id.substring(3,id.length) == 'l' ? 'Distal' : (id.substring(3,id.length) == 'r' ? 'Mesial' : 'Oclusal')))
-          historico.fechahistorico = new Date();
+          //historico.fechahistorico = new Date();
+          historico.fechahistorico = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes()
           if (this.dientesLecheSup.find(elemento => elemento.d == id.substring(0,id.length -2))) {
             let tempArray = []
             this.dientesLecheSup.forEach(item => {

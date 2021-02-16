@@ -47,17 +47,19 @@ export default {
     search: "",
     overlayPos: false,
     nombrePaciente:"",
+    apellidoPaciente:"",
     updatedAlert: false,
     time:"",
    
 
     selUser: {},
     headers: [
-      { text: "#", filterable: false, align: "center", value: "id" },
+      
       { text: "Nombre", align: "center", value: "name" },
+       { text: "Apellidos", align: "center", value: "lastName" },
       { text: "Fecha", align: "center", value: "dateC" },
       { text: "Hora", align: "center", value: "time" },
-      { text: "CC", align: "center", value: "cc" },
+      { text: "Documento", align: "center", value: "cc" },
       { text: "Opciones", align: "center", value: "opciones" },
     ],
     appointmentList: [],
@@ -73,6 +75,7 @@ export default {
             let itemTemp = {}
             itemTemp.id = element.idCita
             itemTemp.name = element.nombrePaciente
+            itemTemp.lastName = element.apellidoPaciente
             itemTemp.dateC = element.fecha.substring(0,10)
             itemTemp.time = element.hora
             itemTemp.cc = element.numDoc
@@ -87,6 +90,7 @@ export default {
     },
     savePos() {
       this.appointmentList[this.appointmentList.indexOf(this.selUser)].name = this.nombrePaciente;
+      this.appointmentList[this.appointmentList.indexOf(this.selUser)].lastName = this.apellidoPaciente;
       this.appointmentList[this.appointmentList.indexOf(this.selUser)].time = this.time;
       this.appointmentList[this.appointmentList.indexOf(this.selUser)].dateC = this.date
       this.updatedAlert = true;
