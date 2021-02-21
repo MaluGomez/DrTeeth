@@ -349,10 +349,8 @@ export default {
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
-              this.alertError = true;
-              setTimeout(() => {
-                this.alertError = false;
-              }, 3000);
+              
+              
             });
 
        this.updatedAlert = true;
