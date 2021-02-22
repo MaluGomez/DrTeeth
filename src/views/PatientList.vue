@@ -725,7 +725,7 @@ export default {
       this.generoPaciente = user.gender;
       this.fechaNacimiento = user.hb;
       this.motivoConsulta = user.plantratamiento;
-      this.observaciones = user.diagnostico;
+      this.observaciones = user.plantratamiento;
       this.pregunta1 = user.pregunta1;
     },
     //GUARDAR TRATAMIENTO (INSERTAR Y ACTUALIZAR)
@@ -766,12 +766,12 @@ export default {
           this.patientsList[
             this.patientsList.indexOf(this.selUser)
           ].dientesLecheInf = this.selUser.dientesLecheInf;
+         // this.patientsList[
+          //  this.patientsList.indexOf(this.selUser)
+         // ].diagnostico = this.observaciones;
           this.patientsList[
             this.patientsList.indexOf(this.selUser)
-          ].diagnostico = this.observaciones;
-          this.patientsList[
-            this.patientsList.indexOf(this.selUser)
-          ].plantratamiento = this.motivoConsulta;
+          ].plantratamiento = this.observaciones;
           this.updatedAlert = true;
         });
       
