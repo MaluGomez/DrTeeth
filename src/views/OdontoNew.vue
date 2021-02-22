@@ -328,14 +328,14 @@ export default {
         documentoIdentidad: this.numDoc,
         direccionAtencion: this.dirAten,
         email: this.email,
-        genero: this.genero,
+        genero: this.genero, 
         telefono: this.telefono,
         contrasena: this.password,
         fechaNacimiento: this.date,
         numeroRegistro: this.numRegistro,
         descripcion: this.descripcion
       };
-            const response = await fetch("https://drteeth.herokuapp.com/Odontologo", {
+      const response = await fetch("https://drteeth.herokuapp.com/Odontologo", {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -345,16 +345,18 @@ export default {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body: JSON.stringify(currentTr)
+            body: JSON.stringify(currentOdonto)
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
               
+              
             });
-      this.updatedAlert = true;
-              setTimeout(() => {
-                this.updatedAlert = false;
-              }, 3000);
+
+       this.updatedAlert = true;
+        setTimeout(() => {
+          this.updatedAlert = false;
+        }, 3000);
     }
     },
   },
