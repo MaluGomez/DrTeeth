@@ -725,7 +725,7 @@ export default {
       this.generoPaciente = user.gender;
       this.fechaNacimiento = user.hb;
       this.motivoConsulta = user.plantratamiento;
-      this.observaciones = user.plantratamiento;
+      this.observaciones = user.diagnostico;
       this.pregunta1 = user.pregunta1;
     },
     //GUARDAR TRATAMIENTO (INSERTAR Y ACTUALIZAR)
