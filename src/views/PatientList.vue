@@ -736,8 +736,8 @@ export default {
         dienteInf: this.selUser.dienteInf,
         dientesLecheSup: this.selUser.dientesLecheSup,
         dientesLecheInf: this.selUser.dientesLecheInf,
-        diagnostico: this.observaciones,
-        planTratamiento: this.motivoConsulta,
+        //diagnostico: this.observaciones,
+        planTratamiento: this.observaciones,
       };
       await fetch("https://drteeth.herokuapp.com/Odontograma", {
         method: "PUT",
